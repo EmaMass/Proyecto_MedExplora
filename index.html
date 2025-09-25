@@ -1,13 +1,409 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html lang="es">
+<head>
     <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Vuetify 3</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+    <title>MedXplora</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c2c54 0%, #1a1a2e 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #6c5ce7 0%, #a29bfe 100%);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .control-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            height: calc(100vh - 80px);
+        }
+
+        .body-section {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, #2d3436 0%, #636e72 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .body-container {
+            position: relative;
+            width: 400px;
+            height: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .human-body-image {
+            width: 350px;
+            height: 550px;
+            background-image: url('path/to/your/human-body-image.png');
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: contain;
+            filter: drop-shadow(0 0 20px rgba(116, 185, 255, 0.4));
+            opacity: 0.9;
+        }
+
+        .controls-section {
+            width: 400px;
+            background: rgba(45, 52, 54, 0.9);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            backdrop-filter: blur(10px);
+            border-left: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 20px;
+            padding-right: 50px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .search-input:focus {
+            background: rgba(255,255,255,0.15);
+            border-color: #6c5ce7;
+            box-shadow: 0 0 10px rgba(108, 92, 231, 0.3);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.5);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .search-icon::after {
+            content: '';
+            position: absolute;
+            top: 18px;
+            right: -8px;
+            width: 2px;
+            height: 8px;
+            background: rgba(255,255,255,0.5);
+            transform: rotate(45deg);
+        }
+
+        .dropdown-container {
+            position: relative;
+        }
+
+        .dropdown-button {
+            width: 100%;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+
+        .dropdown-button:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: #6c5ce7;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .dropdown-arrow {
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 8px solid rgba(255,255,255,0.7);
+            transition: transform 0.3s ease;
+        }
+
+        .dropdown-button.active .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-content {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(45, 52, 54, 0.95);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            margin-top: 5px;
+            z-index: 1000;
+            max-height: 200px;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .dropdown-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .dropdown-item:hover {
+            background: rgba(108, 92, 231, 0.2);
+            color: #a29bfe;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .controls-section {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="app-container">
+            <!-- Header -->
+            <header class="header">
+                <h1>MedXplora</h1>
+                <div class="header-controls">
+                    <div class="control-btn"></div>
+                    <div class="control-btn"></div>
+                    <div class="control-btn"></div>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Human Body Section -->
+                <section class="body-section">
+                    <div class="body-container">
+                        <div class="human-body-image"></div>
+                    </div>
+                </section>
+
+                <!-- Controls Section -->
+                <aside class="controls-section">
+                    <!-- Search Bar -->
+                    <div class="search-container">
+                        <input 
+                            type="text" 
+                            class="search-input" 
+                            placeholder="Buscar" 
+                            v-model="searchTerm"
+                        >
+                        <div class="search-icon"></div>
+                    </div>
+
+                    <!-- Dropdown Menus -->
+                    <div class="dropdown-container">
+                        <button 
+                            class="dropdown-button" 
+                            :class="{ active: dropdowns.informacion }"
+                            @click="toggleDropdown('informacion')"
+                        >
+                            INFORMACIÓN
+                            <div class="dropdown-arrow"></div>
+                        </button>
+                        <div class="dropdown-content" v-if="dropdowns.informacion">
+                            <div class="dropdown-item" v-for="item in menuData.informacion" :key="item">
+                                {{ item }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dropdown-container">
+                        <button 
+                            class="dropdown-button" 
+                            :class="{ active: dropdowns.busqueda }"
+                            @click="toggleDropdown('busqueda')"
+                        >
+                            BÚSQUEDA
+                            <div class="dropdown-arrow"></div>
+                        </button>
+                        <div class="dropdown-content" v-if="dropdowns.busqueda">
+                            <div class="dropdown-item" v-for="item in menuData.busqueda" :key="item">
+                                {{ item }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dropdown-container">
+                        <button 
+                            class="dropdown-button" 
+                            :class="{ active: dropdowns.sistemas }"
+                            @click="toggleDropdown('sistemas')"
+                        >
+                            SISTEMAS
+                            <div class="dropdown-arrow"></div>
+                        </button>
+                        <div class="dropdown-content" v-if="dropdowns.sistemas">
+                            <div class="dropdown-item" v-for="item in menuData.sistemas" :key="item">
+                                {{ item }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dropdown-container">
+                        <button 
+                            class="dropdown-button" 
+                            :class="{ active: dropdowns.diagnosticos }"
+                            @click="toggleDropdown('diagnosticos')"
+                        >
+                            DIAGNÓSTICOS
+                            <div class="dropdown-arrow"></div>
+                        </button>
+                        <div class="dropdown-content" v-if="dropdowns.diagnosticos">
+                            <div class="dropdown-item" v-for="item in menuData.diagnosticos" :key="item">
+                                {{ item }}
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    searchTerm: '',
+                    dropdowns: {
+                        informacion: false,
+                        busqueda: false,
+                        sistemas: false,
+                        diagnosticos: false
+                    },
+                    menuData: {
+                        informacion: [
+                            'Anatomía Básica',
+                            'Fisiología',
+                            'Patología',
+                            'Farmacología',
+                            'Medicina Interna'
+                        ],
+                        busqueda: [
+                            'Por Síntomas',
+                            'Por Órgano',
+                            'Por Sistema',
+                            'Por Enfermedad',
+                            'Por Medicamento'
+                        ],
+                        sistemas: [
+                            'Sistema Cardiovascular',
+                            'Sistema Respiratorio',
+                            'Sistema Digestivo',
+                            'Sistema Nervioso',
+                            'Sistema Endocrino',
+                            'Sistema Inmunológico'
+                        ],
+                        diagnosticos: [
+                            'Diagnóstico Diferencial',
+                            'Pruebas de Laboratorio',
+                            'Estudios de Imagen',
+                            'Examen Físico',
+                            'Historia Clínica'
+                        ]
+                    }
+                }
+            },
+            methods: {
+                toggleDropdown(menu) {
+                    // Close all other dropdowns
+                    Object.keys(this.dropdowns).forEach(key => {
+                        if (key !== menu) {
+                            this.dropdowns[key] = false;
+                        }
+                    });
+                    // Toggle the selected dropdown
+                    this.dropdowns[menu] = !this.dropdowns[menu];
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
 </html>
