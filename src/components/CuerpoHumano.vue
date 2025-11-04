@@ -105,6 +105,13 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 import modeloCuerpoPath from '@/assets/body2.glb?url';
 
+const props = defineProps({
+  highlighted: {
+    type: Array,
+    default: () => []
+  }
+})
+
 const router = useRouter();
 
 // Referencias a elementos del DOM
@@ -205,6 +212,40 @@ onMounted(() => {
     canvasContainer.value.addEventListener('mousemove', onCanvasMouseMove);
   }
 });
+
+watch(() => props.highlighted, (newHighlightedParts) => {
+  updateHighlightsFromProps(newHighlightedParts);
+});
+
+
+function updateHighlightsFromProps(highlightedParts) {
+  // Si la lista de props está vacía, reseteamos todo al estado original
+  // Esto permite que el click/hover funcionen normalmente
+  if (highlightedParts.length === 0) {
+    clickableObjects.forEach(obj => {
+      const originalMat = originalMaterials.get(obj);
+      if (originalMat) {
+        obj.material.emissive.setHex(originalMat.emissive.getHex());
+      }
+    });
+    return;
+  }
+
+  // Si HAY partes para resaltar, ellas toman el control
+  clickableObjects.forEach(obj => {
+    const partName = partMeshMap.get(obj);
+    const originalMat = originalMaterials.get(obj);
+    if (!originalMat) return;
+
+    if (highlightedParts.includes(partName)) {
+      // Aplicar resaltado de síntoma (Rojo)
+      obj.material.emissive.setHex(0xE53935);
+    } else {
+      // Restaurar a original (sin resaltado)
+      obj.material.emissive.setHex(originalMat.emissive.getHex());
+    }
+  });
+}
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', onWindowResize);
@@ -446,6 +487,9 @@ const animate = () => {
 };
 
 const onCanvasMouseMove = (event) => {
+//
+  if (props.highlighted.length > 0) return;
+
   if (!highlightOnHover.value) return;
   
   const rect = canvasContainer.value.getBoundingClientRect();
@@ -492,6 +536,13 @@ const onCanvasMouseMove = (event) => {
 };
 
 const onCanvasClick = (event) => {
+
+  if (props.highlighted.length > 0) {
+    // Desactivamos el click y la navegación
+    // cuando estamos en modo diagnóstico.
+    return;
+  }
+  
   const rect = canvasContainer.value.getBoundingClientRect();
   mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
   mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
