@@ -1,5 +1,29 @@
 # Vuetify (Default)
 
+# IMPORTANTE (Para probar el proyecto con BACKEND)
+
+Se necesita instalar a partir de sudo apt:
+MongoDB
+Utiliza el siguiente link para guiarte: https://www.cherryservers.com/blog/install-mongodb-ubuntu-2404
+Realiza Step 1 a Step 5.
+
+Ahora para probar el proyecto con backend:
+Step 1: Ir a proyecto/src/backend en tu terminal, y ingrese el comando "npm install"
+Step 2: Abre OTRA TERMINAL y en proyecto/ , ingrese el comando "npm install"
+Step 3: Para asegurar que MongoDB este activo: "sudo systemctl start mongod"
+Pasos A:
+Step 4: Ahora, abre una nueva terminal (para que abra en el folder conteniendo el proyecto), corre el comando "npm run backend"
+Step 5: Abre un segundo terminal y ejecuta el comando "npm run dev"
+Pasos B:
+Step 4: En una nueva terminal en la direccion del proyecto, corre "npm run dev:all"
+
+Y listo! 
+
+Para manejar el sistema CMS, necesitas ingresar el link de "http://127.0.0.1:3000/admin"
+Y para observar la respuesta JSON del base de datos, puedes utilizar "http://127.0.0.1:5000/api/content/brazos"
+
+# Documentos importantes
+
 Documentos relacionados al proyecto:
 
 Sprint Backlog: (https://docs.google.com/document/d/1Vrrc2x-kBWDJ0IGy1bzQ_SvDXCUPw3SE28_ps31hklQ/edit?usp=sharing)
