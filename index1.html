@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedExplora UABC - Guía Interactiva de Exploración Física</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.31/dist/vue.global.js"></script>
+    <style>
+        :root {
+            --uabc-primary: #00723F;
+            --uabc-secondary: #DD971A;
+            --uabc-accent1: #50B848;
+            --uabc-accent2: #FEBE10;
+            --uabc-dark: #024731;
+            --uabc-dark-secondary: #B08208;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: var(--uabc-dark);
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+        
+        .uabc-bg-primary {
+            background-color: var(--uabc-primary) !important;
+        }
+        
+        .uabc-bg-secondary {
+            background-color: var(--uabc-secondary) !important;
+        }
+        
+        .uabc-text-primary {
+            color: var(--uabc-primary) !important;
+        }
+        
+        .uabc-text-secondary {
+            color: var(--uabc-secondary) !important;
+        }
+        
+        .uabc-btn-primary {
+            background-color: var(--uabc-primary);
+            border-color: var(--uabc-primary);
+            color: white;
+        }
+        
+        .uabc-btn-primary:hover {
+            background-color: var(--uabc-dark);
+            border-color: var(--uabc-dark);
+            color: white;
+        }
+        
+        .uabc-btn-secondary {
+            background-color: var(--uabc-secondary);
+            border-color: var(--uabc-secondary);
+            color: white;
+        }
+        
+        .uabc-btn-secondary:hover {
+            background-color: var(--uabc-dark-secondary);
+            border-color: var(--uabc-dark-secondary);
+            color: white;
+        }
+        
+        .navbar-uabc {
+            background: linear-gradient(135deg, var(--uabc-primary) 0%, var(--uabc-accent1) 100%);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .uabc-logo {
+            height: 50px;
+            width: auto;
+            margin-right: 15px;
+        }
+        
+        .card-uabc {
+            border-top: 4px solid var(--uabc-secondary);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s;
+        }
+        
+        .card-uabc:hover {
+            transform: translateY(-5px);
+        }
+        
+        .anatomy-figure {
+            height: 500px;
+            background: linear-gradient(135deg, #e8f4fc 0%, #b9def0 100%);
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: 2px solid var(--uabc-secondary);
+        }
+        
+        .body-outline {
+            width: 60%;
+            height: 90%;
+            background-color: #f8f9fa;
+            border: 3px solid var(--uabc-primary);
+            border-radius: 40% 40% 30% 30%;
+            position: relative;
+        }
+        
+        .body-region {
+            position: absolute;
+            background: rgba(0, 114, 63, 0.2);
+            border: 2px solid var(--uabc-primary);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--uabc-dark);
+            font-weight: 500;
+        }
+        
+        .body-region:hover {
+            background: rgba(0, 114, 63, 0.4);
+            transform: scale(1.05);
+        }
+        
+        .head {
+            width: 80px;
+            height: 80px;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 50%;
+        }
+        
+        .chest {
+            width: 150px;
+            height: 120px;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .abdomen {
+            width: 170px;
+            height: 130px;
+            top: 220px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .arm-left {
+            width: 50px;
+            height: 180px;
+            top: 120px;
+            left: 85px;
+        }
+        
+        .arm-right {
+            width: 50px;
+            height: 180px;
+            top: 120px;
+            right: 85px;
+        }
+        
+        .leg-left {
+            width: 60px;
+            height: 200px;
+            top: 300px;
+            left: 140px;
+        }
+        
+        .leg-right {
+            width: 60px;
+            height: 200px;
+            top: 300px;
+            right: 140px;
+        }
+        
+        .system-option {
+            transition: all 0.3s;
+            border-left: 4px solid var(--uabc-accent1);
+        }
+        
+        .system-option:hover {
+            background-color: rgba(254, 190, 16, 0.2);
+            border-left-color: var(--uabc-primary);
+        }
+        
+        footer {
+            background: linear-gradient(135deg, var(--uabc-primary) 0%, var(--uabc-accent1) 100%);
+        }
+        
+        @media (max-width: 992px) {
+            .anatomy-figure {
+                height: 400px;
+            }
+            
+            .uabc-logo {
+                height: 40px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .body-outline {
+                width: 80%;
+            }
+            
+            .arm-left {
+                left: 40px;
+            }
+            
+            .arm-right {
+                right: 40px;
+            }
+            
+            .leg-left {
+                left: 100px;
+            }
+            
+            .leg-right {
+                right: 100px;
+            }
+            
+            .uabc-logo {
+                height: 35px;
+                margin-right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-uabc">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" href="#">
+                    <img src="./logo.png" alt="Logo UABC" class="uabc-logo">
+                    <div>
+                        <span class="fw-bold fs-4">MedExplora</span>
+                        <span class="badge bg-warning ms-2">UABC</span>
+                    </div>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#"><i class="bi bi-house-door me-1"></i> Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="bi bi-book me-1"></i> Guías</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="bi bi-collection-play me-1"></i> Multimedia</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="bi bi-journal-check me-1"></i> Casos Clínicos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="bi bi-info-circle me-1"></i> Acerca de</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container mt-4">
+            <!-- Search Bar -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="input-group">
+                        <input type="text" class="form-control form-control-lg" placeholder="Buscar procedimiento, síntoma o área anatómica...">
+                        <button class="btn uabc-btn-primary btn-lg" type="button">
+                            <i class="bi bi-search me-1"></i> Buscar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <!-- Main Content -->
+                <div class="col-lg-8">
+                    <div class="card card-uabc mb-4">
+                        <div class="card-body">
+                            <h3 class="card-title uabc-text-primary">
+                                <i class="bi bi-person-standing me-2"></i>Modelo Anatómico Interactivo
+                            </h3>
+                            <div class="anatomy-figure">
+                                <div class="body-outline">
+                                    <div class="body-region head" @click="selectRegion('Cabeza')">
+                                        Cabeza
+                                    </div>
+                                    <div class="body-region chest" @click="selectRegion('Tórax')">
+                                        Tórax
+                                    </div>
+                                    <div class="body-region abdomen" @click="selectRegion('Abdomen')">
+                                        Abdomen
+                                    </div>
+                                    <div class="body-region arm-left" @click="selectRegion('Brazo Izquierdo')">
+                                        MSup Izq
+                                    </div>
+                                    <div class="body-region arm-right" @click="selectRegion('Brazo Derecho')">
+                                        MSup Der
+                                    </div>
+                                    <div class="body-region leg-left" @click="selectRegion('Pierna Izquierda')">
+                                        MInf Izq
+                                    </div>
+                                    <div class="body-region leg-right" @click="selectRegion('Pierna Derecha')">
+                                        MInf Der
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div v-if="selectedRegion" class="bg-uabc-primary text-black p-3 rounded">
+                                <h4 class="mb-3">Exploración {{ selectedRegion }}</h4>
+                                <p>Seleccione el sistema que desea explorar:</p>
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-4 mb-2" v-for="system in systems" :key="system">
+                                        <div class="system-option p-3 bg-white text-dark rounded shadow-sm cursor-pointer" @click="selectSystem(system)">
+                                            <i :class="getSystemIcon(system) + ' me-2'"></i>
+                                            {{ system }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-else class="text-center p-3">
+                                <p class="lead">Seleccione una región del cuerpo para explorar los sistemas asociados.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sidebar -->
+                <div class="col-lg-4">
+                    <!-- Systems Card -->
+                    <div class="card card-uabc mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title uabc-text-primary">
+                                <i class="bi bi-diagram-3 me-2"></i>Sistemas Corporales
+                            </h5>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item system-option d-flex align-items-center cursor-pointer" v-for="system in allSystems" :key="system" @click="selectSystem(system)">
+                                    <i :class="getSystemIcon(system) + ' me-2 uabc-text-primary'"></i>
+                                    {{ system }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div class="card card-uabc mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title uabc-text-primary">
+                                <i class="bi bi-lightning me-2"></i>Acciones Rápidas
+                            </h5>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <div class="card bg-light cursor-pointer h-100 text-center p-3" @click="showFeature('Casos clínicos')">
+                                        <i class="bi bi-heart-pulse fs-2 uabc-text-primary mb-2"></i>
+                                        <p class="mb-0">Casos Clínicos</p>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="card bg-light cursor-pointer h-100 text-center p-3" @click="showFeature('Checklists')">
+                                        <i class="bi bi-check2-square fs-2 uabc-text-primary mb-2"></i>
+                                        <p class="mb-0">Checklists</p>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="card bg-light cursor-pointer h-100 text-center p-3" @click="showFeature('Multimedia')">
+                                        <i class="bi bi-play-btn fs-2 uabc-text-primary mb-2"></i>
+                                        <p class="mb-0">Multimedia</p>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="card bg-light cursor-pointer h-100 text-center p-3" @click="showFeature('Glosario')">
+                                        <i class="bi bi-book fs-2 uabc-text-primary mb-2"></i>
+                                        <p class="mb-0">Glosario</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Review -->
+                    <div class="card card-uabc mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title uabc-text-primary">
+                                <i class="bi bi-speedometer2 me-2"></i>Modo Repaso Rápido
+                            </h5>
+                            <p class="card-text">Active el modo de repaso para obtener información condensada de los procedimientos más importantes.</p>
+                            <button class="btn uabc-btn-primary w-100" @click="activateQuickReview">
+                                <i class="bi bi-lightning-charge me-2"></i>Activar Repaso
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- UABC Resources -->
+                    <div class="card card-uabc">
+                        <div class="card-body">
+                            <h5 class="card-title uabc-text-primary">
+                                <i class="bi bi-building me-2"></i>Recursos UABC
+                            </h5>
+                            <div class="list-group">
+                                <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
+                                    <i class="bi bi-bookmarks me-2 uabc-text-primary"></i>
+                                    Biblioteca
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
+                                    <i class="bi bi-building me-2 uabc-text-primary"></i>
+                                    Facultad de Medicina
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
+                                    <i class="bi bi-people me-2 uabc-text-primary"></i>
+                                    Docentes
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <footer class="mt-5 py-4 text-white text-center rounded">
+                <div class="container">
+                    <p class="mb-0">MedExplora © 2023 - Universidad Autónoma de Baja California - Facultad de Medicina</p>
+                    <p class="mb-0">Herramienta educativa para estudiantes de medicina</p>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Vue App -->
+    <script>
+        const { createApp, ref } = Vue;
+        
+        createApp({
+            setup() {
+                const selectedRegion = ref(null);
+                const selectedSystem = ref(null);
+                
+                const allSystems = [
+                    'Cardiovascular', 'Respiratorio', 'Abdominal', 
+                    'Neurológico', 'Osteomuscular', 'Piel y Tegumentos'
+                ];
+                
+                const regionSystems = {
+                    'Cabeza': ['Neurológico', 'Osteomuscular', 'Visual', 'Auditivo'],
+                    'Tórax': ['Cardiovascular', 'Respiratorio', 'Linfático'],
+                    'Abdomen': ['Abdominal', 'Digestivo', 'Urinario'],
+                    'Brazo Izquierdo': ['Osteomuscular', 'Vascular', 'Nervioso'],
+                    'Brazo Derecho': ['Osteomuscular', 'Vascular', 'Nervioso'],
+                    'Pierna Izquierda': ['Osteomuscular', 'Vascular', 'Neurológico'],
+                    'Pierna Derecha': ['Osteomuscular', 'Vascular', 'Neurológico']
+                };
+                
+                const systems = ref([]);
+                
+                const selectRegion = (region) => {
+                    selectedRegion.value = region;
+                    selectedSystem.value = null;
+                    systems.value = regionSystems[region] || [];
+                };
+                
+                const selectSystem = (system) => {
+                    selectedSystem.value = system;
+                    alert(`Has seleccionado el sistema ${system}. Esta funcionalidad se implementará completamente en la aplicación final.`);
+                };
+                
+                const showFeature = (feature) => {
+                    alert(`Accediendo a ${feature}. Esta funcionalidad se implementará completamente en la aplicación final.`);
+                };
+                
+                const activateQuickReview = () => {
+                    alert('Activando modo de repaso rápido. Esta funcionalidad se implementará completamente en la aplicación final.');
+                };
+                
+                const getSystemIcon = (system) => {
+                    const icons = {
+                        'Cardiovascular': 'bi-heart',
+                        'Respiratorio': 'bi-lungs',
+                        'Abdominal': 'bi-stomach',
+                        'Neurológico': 'bi-cpu',
+                        'Osteomuscular': 'bi-arrow-left-right',
+                        'Digestivo': 'bi-circle',
+                        'Vascular': 'bi-droplet',
+                        'Piel y Tegumentos': 'bi-circle-square',
+                        'Visual': 'bi-eye',
+                        'Auditivo': 'bi-ear',
+                        'Linfático': 'bi-droplet-half',
+                        'Urinario': 'bi-droplet',
+                        'Nervioso': 'bi-cpu'
+                    };
+                    return icons[system] || 'bi-question-circle';
+                };
+                
+                return {
+                    selectedRegion,
+                    selectedSystem,
+                    allSystems,
+                    systems,
+                    selectRegion,
+                    selectSystem,
+                    showFeature,
+                    activateQuickReview,
+                    getSystemIcon
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
