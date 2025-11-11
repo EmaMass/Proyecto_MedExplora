@@ -19,6 +19,10 @@ declare module 'vue-router/auto-routes' {
    */
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
+    '/secciones_cuerpo/brazos': RouteRecordInfo<'/secciones_cuerpo/brazos', '/secciones_cuerpo/brazos', Record<never, never>, Record<never, never>>,
+    '/secciones_cuerpo/cabeza': RouteRecordInfo<'/secciones_cuerpo/cabeza', '/secciones_cuerpo/cabeza', Record<never, never>, Record<never, never>>,
+    '/secciones_cuerpo/piernas': RouteRecordInfo<'/secciones_cuerpo/piernas', '/secciones_cuerpo/piernas', Record<never, never>, Record<never, never>>,
+    '/secciones_cuerpo/torso': RouteRecordInfo<'/secciones_cuerpo/torso', '/secciones_cuerpo/torso', Record<never, never>, Record<never, never>>,
   }
 
   /**
@@ -34,6 +38,22 @@ declare module 'vue-router/auto-routes' {
   export interface _RouteFileInfoMap {
     'src/pages/index.vue': {
       routes: '/'
+      views: never
+    }
+    'src/pages/secciones_cuerpo/brazos.vue': {
+      routes: '/secciones_cuerpo/brazos'
+      views: never
+    }
+    'src/pages/secciones_cuerpo/cabeza.vue': {
+      routes: '/secciones_cuerpo/cabeza'
+      views: never
+    }
+    'src/pages/secciones_cuerpo/piernas.vue': {
+      routes: '/secciones_cuerpo/piernas'
+      views: never
+    }
+    'src/pages/secciones_cuerpo/torso.vue': {
+      routes: '/secciones_cuerpo/torso'
       views: never
     }
   }
