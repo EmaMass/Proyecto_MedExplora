@@ -3,7 +3,7 @@
     <AppHeader />
 
     <main class="main-content">
-      <CuerpoHumano />
+      <CuerpoHumano :highlightedParts="highlightedBodyParts" />
 
       <aside class="controls-section">
         <BarraBusqueda v-model="searchTerm" />
@@ -34,9 +34,13 @@
           :items="menuData.diagnosticos"
           :isOpen="dropdowns.diagnosticos"
           @toggle="toggleDropdown('diagnosticos')"
+          @item-click="handleDiagnosticsClick"
         />
       </aside>
     </main>
+
+    <!-- Botón flotante de diagnósticos -->
+    <FloatingDiagnostics @symptoms-changed="handleSymptomsChanged" />
   </div>
 </template>
 
@@ -45,12 +49,14 @@ import AppHeader from '/src/components/AppHeader.vue'
 import CuerpoHumano from '/src/components/CuerpoHumano.vue'
 import BarraBusqueda from '/src/components/BarraBusqueda.vue'
 import MenuDropdown from '/src/components/MenuDropdown.vue'
+import FloatingDiagnostics from '@/components/FloatingDiagnostics.vue'
 
 import '/src/styles/medxplora.css'
 
 import { reactive, ref } from 'vue'
 
 const searchTerm = ref('')
+const highlightedBodyParts = ref([])
 
 const dropdowns = reactive({
   informacion: false,
@@ -97,4 +103,43 @@ function toggleDropdown(menu) {
   }
   dropdowns[menu] = !dropdowns[menu]
 }
+
+function handleDiagnosticsClick(item) {
+  console.log('Diagnóstico seleccionado:', item)
+  // Aquí puedes manejar otros items del menú de diagnósticos si lo necesitas
+}
+
+function handleSymptomsChanged(bodyParts) {
+  highlightedBodyParts.value = bodyParts
+}
 </script>
+
+<style scoped>
+.app-container {
+  min-height: 100vh;
+  background: var(--bg-primary, #f8f9fa);
+}
+
+.main-content {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.controls-section {
+  flex: 0 0 320px;
+  height: fit-content;
+}
+
+@media (max-width: 1024px) {
+  .main-content {
+    flex-direction: column;
+  }
+
+  .controls-section {
+    flex: 1;
+  }
+}
+</style>

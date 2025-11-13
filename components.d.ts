@@ -12,6 +12,7 @@ declare module 'vue' {
     BarraBusqueda: typeof import('./src/components/BarraBusqueda.vue')['default']
     CuerpoHumano: typeof import('./src/components/CuerpoHumano.vue')['default']
     DiagnosticsHelper: typeof import('./src/components/DiagnosticsHelper.vue')['default']
+    FloatingDiagnostics: typeof import('./src/components/FloatingDiagnostics.vue')['default']
     MenuDropdown: typeof import('./src/components/MenuDropdown.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
