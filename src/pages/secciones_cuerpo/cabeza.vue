@@ -43,58 +43,12 @@
         </div>
         
         <!-- Panel de información derecha -->
-        <div style="width: 350px; background: #f5f5f5; overflow-y: auto; border-left: 1px solid #e0e0e0; padding: 24px;">
-          <div style="margin-bottom: 24px;">
-            <v-chip prepend-icon="mdi-head" color="success" class="mb-3">
-              Región Cefálica
-            </v-chip>
-            <h2 style="font-size: 24px; font-weight: 600; margin: 16px 0; color: #1B5E20;">Cabeza</h2>
-            <p style="color: #666; line-height: 1.6; margin-bottom: 16px;">
-              La cabeza es la región más superior del cuerpo humano. Contiene el cráneo que protege el cerebro y alberga varios órganos sensoriales vitales.
-            </p>
-          </div>
-          
-          <v-divider class="my-4"></v-divider>
-          
-          <div style="margin-bottom: 24px;">
-            <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #333;">Componentes principales:</h3>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <div style="padding: 12px; background: white; border-left: 4px solid #1B5E20; border-radius: 4px;">
-                <div style="font-weight: 600; color: #1B5E20;">Cráneo</div>
-                <div style="font-size: 12px; color: #666; margin-top: 4px;">Estructura ósea protectora</div>
-              </div>
-              <div style="padding: 12px; background: white; border-left: 4px solid #1B5E20; border-radius: 4px;">
-                <div style="font-weight: 600; color: #1B5E20;">Cerebro</div>
-                <div style="font-size: 12px; color: #666; margin-top: 4px;">Centro de control del cuerpo</div>
-              </div>
-              <div style="padding: 12px; background: white; border-left: 4px solid #1B5E20; border-radius: 4px;">
-                <div style="font-weight: 600; color: #1B5E20;">Ojos</div>
-                <div style="font-size: 12px; color: #666; margin-top: 4px;">Órganos de la visión</div>
-              </div>
-              <div style="padding: 12px; background: white; border-left: 4px solid #1B5E20; border-radius: 4px;">
-                <div style="font-weight: 600; color: #1B5E20;">Oídos</div>
-                <div style="font-size: 12px; color: #666; margin-top: 4px;">Órganos de la audición</div>
-              </div>
-              <div style="padding: 12px; background: white; border-left: 4px solid #1B5E20; border-radius: 4px;">
-                <div style="font-weight: 600; color: #1B5E20;">Boca</div>
-                <div style="font-size: 12px; color: #666; margin-top: 4px;">Apertura para alimentación</div>
-              </div>
-            </div>
-          </div>
-          
-          <v-divider class="my-4"></v-divider>
-          
-          <div>
-            <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #333;">Funciones principales:</h3>
-            <ul style="padding-left: 20px; color: #666; line-height: 1.8; font-size: 14px;">
-              <li>Protección del cerebro</li>
-              <li>Percepción sensorial (vista, audición, olfato, gusto)</li>
-              <li>Procesamiento de información</li>
-              <li>Expresión facial y comunicación</li>
-              <li>Control del equilibrio</li>
-            </ul>
-          </div>
-        </div>
+        <PanelContenidoCuerpo
+          sectionKey="cabeza"
+          title="Cabeza"
+          icon="mdi-head"
+          chipColor="success"
+        />
       </v-card-text>
     </v-card>
   </v-container>
@@ -106,8 +60,8 @@ import { useRouter } from 'vue-router';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-
-import modeloCabeaPath from '@/assets/head.glb?url';
+import modeloCabezaPath from '@/assets/head.glb?url';
+import PanelContenidoCuerpo from '@/components/PanelContenidoCuerpo.vue';
 
 const router = useRouter();
 const canvasContainer = ref(null);
@@ -182,7 +136,7 @@ const loadModel = () => {
   const loader = new GLTFLoader();
   
   loader.load(
-    modeloCabeaPath,
+    modeloCabezaPath,
     (gltf) => {
       const model = gltf.scene;
 

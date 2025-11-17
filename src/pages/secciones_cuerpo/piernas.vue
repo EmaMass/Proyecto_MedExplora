@@ -43,58 +43,12 @@
         </div>
         
         <!-- Panel de información derecha -->
-        <div style="width: 350px; background: #f5f5f5; overflow-y: auto; border-left: 1px solid #e0e0e0; padding: 24px;">
-          <div style="margin-bottom: 24px;">
-            <v-chip prepend-icon="mdi-human-male-height" color="info" class="mb-3">
-              Extremidades Inferiores
-            </v-chip>
-            <h2 style="font-size: 24px; font-weight: 600; margin: 16px 0; color: #283593;">Piernas</h2>
-            <p style="color: #666; line-height: 1.6; margin-bottom: 16px;">
-              Las piernas son extremidades inferiores que proporcionan soporte, estabilidad y movilidad al cuerpo. Son las estructuras más fuertes y robustas del esqueleto.
-            </p>
-          </div>
-          
-          <v-divider class="my-4"></v-divider>
-          
-          <div style="margin-bottom: 24px;">
-            <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #333;">Estructuras clave:</h3>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <div style="padding: 12px; background: white; border-left: 4px solid #283593; border-radius: 4px;">
-                <div style="font-weight: 600; color: #283593;">Cadera</div>
-                <div style="font-size: 12px; color: #666; margin-top: 4px;">Unión con el torso</div>
-              </div>
-              <div style="padding: 12px; background: white; border-left: 4px solid #283593; border-radius: 4px;">
-                <div style="font-weight: 600; color: #283593;">Muslo</div>
-                <div style="font-size: 12px; color: #666; margin-top: 4px;">Segmento más largo y fuerte</div>
-              </div>
-              <div style="padding: 12px; background: white; border-left: 4px solid #283593; border-radius: 4px;">
-                <div style="font-weight: 600; color: #283593;">Rodilla</div>
-                <div style="font-size: 12px; color: #666; margin-top: 4px;">Articulación principal de flexión</div>
-              </div>
-              <div style="padding: 12px; background: white; border-left: 4px solid #283593; border-radius: 4px;">
-                <div style="font-weight: 600; color: #283593;">Pantorrilla</div>
-                <div style="font-size: 12px; color: #666; margin-top: 4px;">Músculos para impulso y movimiento</div>
-              </div>
-              <div style="padding: 12px; background: white; border-left: 4px solid #283593; border-radius: 4px;">
-                <div style="font-weight: 600; color: #283593;">Pies</div>
-                <div style="font-size: 12px; color: #666; margin-top: 4px;">Base de apoyo y equilibrio</div>
-              </div>
-            </div>
-          </div>
-          
-          <v-divider class="my-4"></v-divider>
-          
-          <div>
-            <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #333;">Funciones principales:</h3>
-            <ul style="padding-left: 20px; color: #666; line-height: 1.8; font-size: 14px;">
-              <li>Soporte del peso corporal</li>
-              <li>Locomoción y desplazamiento</li>
-              <li>Equilibrio y estabilidad</li>
-              <li>Propulsión en actividades físicas</li>
-              <li>Amortiguación de impactos</li>
-            </ul>
-          </div>
-        </div>
+        <PanelContenidoCuerpo
+          sectionKey="piernas"
+          title="Piernas"
+          icon="mdi-human-male-height"
+          chipColor="info"
+        />
       </v-card-text>
     </v-card>
   </v-container>
@@ -106,8 +60,8 @@ import { useRouter } from 'vue-router';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-
 import modeloPiernasPath from '@/assets/piernas.glb?url';
+import PanelContenidoCuerpo from '@/components/PanelContenidoCuerpo.vue'
 
 const router = useRouter();
 const canvasContainer = ref(null);

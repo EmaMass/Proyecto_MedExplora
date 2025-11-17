@@ -1,0 +1,66 @@
+[33mcommit 347361ef75b36d67a9340d32a1a8e200b2a6e574[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mbackend[m[33m, [m[1;31morigin/backend[m[33m)[m
+Author: EmaMass <127337256+EmaMass@users.noreply.github.com>
+Date:   Sun Nov 9 21:32:00 2025 -0800
+
+    Update README.md
+
+[33mcommit 0c1a4edb5ba725467aaab111865aeb7678275b66[m
+Author: EmaMass <emanuel.massuda@uabc.edu.mx>
+Date:   Sun Nov 9 21:30:27 2025 -0800
+
+    Sistema CMS implementado en la pagina brazos.vue, falta implementacion en las otras paginas dentro de secciones_cuerpo
+
+[33mcommit 62cbbb83a6324e051ef4c133a6c3d86761538b83[m[33m ([m[1;31morigin/feature/modelos3d[m[33m)[m
+Author: Luis Godinez <godinez.luis53@uabc.edu.mx>
+Date:   Mon Oct 20 16:28:07 2025 -0700
+
+    Modificacion en modelos para su vista correcta en las ventanas
+
+[33mcommit 48e421fd2be8413f8d83d19c51f5855c86f4597c[m
+Author: Luis Godinez <godinez.luis53@uabc.edu.mx>
+Date:   Sun Oct 19 21:24:19 2025 -0700
+
+    Se agregaron modelos 3d y ventanas de cada modelo con un poco de informacion
+
+[33mcommit 73fc2283a4a542febca5a86d8b3bf0cc849c8e84[m[33m ([m[1;31morigin/vuetifyd[m[33m, [m[1;32mvuetifyd[m[33m)[m
+Author: EmaMass <emanuel.massuda@uabc.edu.mx>
+Date:   Sat Oct 4 22:55:33 2025 -0700
+
+    Codigo de index.html movido a index.vue, y funciones repartidas a componentes, medxplora.css generado para el estilo UABC
+
+[33mcommit 26f766056c81752d9ae69ab330b6a196a8e6b376[m[33m ([m[1;32mmaster[m[33m)[m
+Author: Martin07022003 <banuelos1183361@uabc.edu.mx>
+Date:   Tue Sep 30 19:27:40 2025 -0700
+
+    Cambio de estilo a estilo UABC
+
+[33mcommit 3c11d56d6be0a98671cbfd3311284625ec03c556[m
+Author: EmaMass <emanuel.massuda@uabc.edu.mx>
+Date:   Thu Sep 25 16:57:52 2025 -0700
+
+    Fix de ruta para HumanBody.png
+
+[33mcommit d6d9d3df1ccb3b24580711c25cd667acd0e7ade0[m
+Merge: 0193212 3e43c6c
+Author: Riebon3logy <andres.le.gresley@uabc.edu.mx>
+Date:   Thu Sep 25 16:32:42 2025 -0700
+
+    Merge branch 'master' of https://github.com/EmaMass/Proyecto_MedExplora
+
+[33mcommit 0193212163a9d80a3c476495202dd7d51d9e7ffa[m
+Author: Riebon3logy <andres.le.gresley@uabc.edu.mx>
+Date:   Thu Sep 25 16:23:25 2025 -0700
+
+    Primera version de la UI
+
+[33mcommit 3e43c6c7004fe846510e066a034039227d45f35c[m
+Author: Andres Le Gresley <162372913+Riebon3logy@users.noreply.github.com>
+Date:   Thu Sep 25 16:17:37 2025 -0700
+
+    Imagen para la PWA
+
+[33mcommit 3cdd220f4673a7cec6c7838d438954a47e0e55ee[m
+Author: EmaMass <emanuel.massuda@uabc.edu.mx>
+Date:   Tue Sep 23 18:46:00 2025 -0700
+
+    Cambiando base de Vue a Vuetify, para tomar ventaja de los componentes ya creados

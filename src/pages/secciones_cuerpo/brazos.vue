@@ -43,24 +43,14 @@
         </div>
 
         <!-- Panel de información derecha -->
-        <div style="width: 350px; background: #f5f5f5; overflow-y: auto; border-left: 1px solid #e0e0e0; padding: 24px;">
-          <template v-if="!contentError">
-            <v-chip prepend-icon="mdi-arm-flex" color="teal" class="mb-3">
-              Extremidades Superiores
-            </v-chip>
-            <h2 style="font-size: 24px; font-weight: 600; margin: 16px 0; color: #00796B;">Brazos</h2>
+        <PanelContenidoCuerpo
+          sectionKey="brazos"
+          title="Brazos"
+          icon="mdi-arm-flex"
+          chipColor="teal"
+        />
 
-            <div v-if="content.image" class="mb-4">
-              <v-img :src="content.image" max-width="300" class="rounded-lg elevation-2"></v-img>
-            </div>
 
-            <div v-html="content.text" style="color: #444; line-height: 1.6; font-size: 14px;"></div>
-          </template>
-
-          <div v-else style="color: red; text-align: center;">
-            Error al cargar contenido.
-          </div>
-        </div>
       </v-card-text>
     </v-card>
   </v-container>
@@ -74,6 +64,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { getContent } from '@/api/content'
 import modeloArmsPath from '@/assets/brazos.glb?url'
+import PanelContenidoCuerpo from '@/components/PanelContenidoCuerpo.vue'
 
 const router = useRouter()
 const canvasContainer = ref(null)

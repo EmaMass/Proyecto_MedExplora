@@ -43,58 +43,12 @@
         </div>
         
         <!-- Panel de información derecha -->
-        <div style="width: 350px; background: #f5f5f5; overflow-y: auto; border-left: 1px solid #e0e0e0; padding: 24px;">
-          <div style="margin-bottom: 24px;">
-            <v-chip prepend-icon="mdi-human-male-board" color="warning" class="mb-3">
-              Tronco
-            </v-chip>
-            <h2 style="font-size: 24px; font-weight: 600; margin: 16px 0; color: #F57C00;">Torso</h2>
-            <p style="color: #666; line-height: 1.6; margin-bottom: 16px;">
-              El torso es la sección central del cuerpo que comprende el tórax y el abdomen. Es el hogar de los órganos vitales más importantes para la supervivencia.
-            </p>
-          </div>
-          
-          <v-divider class="my-4"></v-divider>
-          
-          <div style="margin-bottom: 24px;">
-            <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #333;">Órganos principales:</h3>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <div style="padding: 12px; background: white; border-left: 4px solid #F57C00; border-radius: 4px;">
-                <div style="font-weight: 600; color: #F57C00;">Corazón</div>
-                <div style="font-size: 12px; color: #666; margin-top: 4px;">Bombea sangre por todo el cuerpo</div>
-              </div>
-              <div style="padding: 12px; background: white; border-left: 4px solid #F57C00; border-radius: 4px;">
-                <div style="font-weight: 600; color: #F57C00;">Pulmones</div>
-                <div style="font-size: 12px; color: #666; margin-top: 4px;">Realizan el intercambio de gases</div>
-              </div>
-              <div style="padding: 12px; background: white; border-left: 4px solid #F57C00; border-radius: 4px;">
-                <div style="font-weight: 600; color: #F57C00;">Hígado</div>
-                <div style="font-size: 12px; color: #666; margin-top: 4px;">Filtra y procesa nutrientes</div>
-              </div>
-              <div style="padding: 12px; background: white; border-left: 4px solid #F57C00; border-radius: 4px;">
-                <div style="font-weight: 600; color: #F57C00;">Estómago</div>
-                <div style="font-size: 12px; color: #666; margin-top: 4px;">Digiere los alimentos</div>
-              </div>
-              <div style="padding: 12px; background: white; border-left: 4px solid #F57C00; border-radius: 4px;">
-                <div style="font-weight: 600; color: #F57C00;">Intestinos</div>
-                <div style="font-size: 12px; color: #666; margin-top: 4px;">Absorben nutrientes</div>
-              </div>
-            </div>
-          </div>
-          
-          <v-divider class="my-4"></v-divider>
-          
-          <div>
-            <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #333;">Funciones principales:</h3>
-            <ul style="padding-left: 20px; color: #666; line-height: 1.8; font-size: 14px;">
-              <li>Circulación de la sangre</li>
-              <li>Respiración y oxigenación</li>
-              <li>Digestión de alimentos</li>
-              <li>Metabolismo y producción de energía</li>
-              <li>Protección de órganos vitales</li>
-            </ul>
-          </div>
-        </div>
+        <PanelContenidoCuerpo
+          sectionKey="torso"
+          title="Torso"
+          icon="mdi-human-male-board"
+          chipColor="warning"
+        />
       </v-card-text>
     </v-card>
   </v-container>
@@ -106,8 +60,8 @@ import { useRouter } from 'vue-router';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-
 import modeloTorsoPath from '@/assets/torso.glb?url';
+import PanelContenidoCuerpo from '@/components/PanelContenidoCuerpo.vue';
 
 const router = useRouter();
 const canvasContainer = ref(null);

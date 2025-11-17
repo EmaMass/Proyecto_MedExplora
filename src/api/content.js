@@ -11,6 +11,6 @@ export const getContent = async (page) => {
 }
 
 export const updateContent = async (page, data) => {
-  const res = await api.post(`/content/${page}`, JSON.stringify(data))
+  const res = await api.post(`/content/${page}`, data)
   return res.data
 }
