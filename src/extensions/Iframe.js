@@ -13,7 +13,7 @@ export const Iframe = Node.create({
         default: null,
       },
       width: {
-        default: '560',
+        default: '300',
       },
       height: {
         default: '315',
