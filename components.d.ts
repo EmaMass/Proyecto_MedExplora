@@ -23,6 +23,6 @@ declare module 'vue' {
     PanelContenidoCuerpo: typeof import('./src/components/PanelContenidoCuerpo.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SemiologiaCabezCuello: typeof import('./src/components/info/SemiologiaCabezCuello.vue')['default']
+    SemiologiaCabezCuello: typeof import('./src/components/info/SemiologiaCabezaCuello.vue')['default']
   }
 }
