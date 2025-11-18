@@ -1,32 +1,50 @@
 <template>
-  <div class="dropdown-container">
+  <div class="menu-dropdown">
     <button
-      class="dropdown-button"
+      class="dropdown-trigger"
       :class="{ active: isOpen }"
       @click="$emit('toggle')"
+      :aria-expanded="isOpen"
+      :aria-label="`Toggle ${title} menu`"
     >
-      {{ title }}
-      <div class="dropdown-arrow"></div>
+      <span class="trigger-text">{{ title }}</span>
+      <v-icon class="trigger-icon" :class="{ rotated: isOpen }">
+        mdi-chevron-down
+      </v-icon>
     </button>
 
-    <div class="dropdown-content" v-if="isOpen">
-      <div
-        class="dropdown-item"
-        v-for="item in items"
-        :key="item"
-        @click="handleItemClick(item)"
-      >
-        {{ item }}
+    <transition name="dropdown">
+      <div v-if="isOpen" class="dropdown-content">
+        <button
+          v-for="(item, index) in items"
+          :key="index"
+          class="dropdown-item"
+          @click="handleItemClick(item)"
+          :style="{ animationDelay: `${index * 0.05}s` }"
+        >
+          <v-icon size="small" class="item-icon">mdi-circle-small</v-icon>
+          <span class="item-text">{{ item }}</span>
+          <v-icon size="small" class="item-arrow">mdi-chevron-right</v-icon>
+        </button>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 
 <script setup>
 defineProps({
-  title: String,
-  items: Array,
-  isOpen: Boolean
+  title: {
+    type: String,
+    required: true
+  },
+  items: {
+    type: Array,
+    required: true
+  },
+  isOpen: {
+    type: Boolean,
+    default: false
+  }
 })
 
 const emit = defineEmits(['toggle', 'item-click'])
@@ -37,58 +55,187 @@ function handleItemClick(item) {
 </script>
 
 <style scoped>
-.dropdown-container {
-  margin-bottom: 1rem;
-}
-
-.dropdown-button {
+.menu-dropdown {
+  position: relative;
   width: 100%;
-  padding: 1rem;
-  background: var(--bg-secondary, #f5f5f5);
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
+}
+
+/* TRIGGER BUTTON */
+.dropdown-trigger {
+  width: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  padding: var(--space-lg);
+  background: linear-gradient(135deg, var(--uabc-green-primary), var(--uabc-green-light));
+  border: 2px solid transparent;
+  border-radius: var(--radius-lg);
+  color: var(--uabc-white);
+  font-size: 0.9375rem;
   font-weight: 600;
-  font-size: 0.95rem;
-  color: var(--text-primary, #333);
-  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
 }
 
-.dropdown-button:hover {
-  background: var(--bg-hover, #e8e8e8);
+.dropdown-trigger::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.1));
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+.dropdown-trigger:hover::before {
+  opacity: 1;
+}
+
+.dropdown-trigger:hover {
   transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--uabc-yellow-primary);
 }
 
-.dropdown-button.active {
-  background: var(--primary-color, #4a90e2);
-  color: white;
+.dropdown-trigger.active {
+  background: linear-gradient(135deg, var(--uabc-yellow-primary), var(--uabc-yellow-light));
+  color: var(--uabc-green-dark);
+  box-shadow: var(--shadow-md);
 }
 
-.dropdown-arrow {
-  width: 0;
-  height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid currentColor;
-  transition: transform 0.3s ease;
+.dropdown-trigger:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
 }
 
-.dropdown-button.active .dropdown-arrow {
+.trigger-text {
+  flex: 1;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.trigger-icon {
+  transition: transform var(--transition-normal);
+  font-size: 1.5rem;
+}
+
+.trigger-icon.rotated {
   transform: rotate(180deg);
 }
 
+/* DROPDOWN CONTENT */
 .dropdown-content {
-  margin-top: 0.5rem;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: var(--space-sm);
+  background: var(--uabc-white);
+  border: 1px solid var(--uabc-gray-300);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
   overflow: hidden;
-  animation: slideDown 0.3s ease;
+  animation: slideDown 0.3s ease-out;
 }
 
+/* DROPDOWN ITEMS */
+.dropdown-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--uabc-gray-200);
+  color: var(--uabc-gray-700);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+  animation: fadeInItem 0.3s ease-out backwards;
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.dropdown-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  background: var(--uabc-yellow-primary);
+  transition: width var(--transition-fast);
+}
+
+.dropdown-item:hover {
+  background: linear-gradient(90deg, 
+    rgba(0, 114, 63, 0.05) 0%, 
+    transparent 100%
+  );
+  color: var(--uabc-green-primary);
+  padding-left: calc(var(--space-lg) + 4px);
+}
+
+.dropdown-item:hover::before {
+  width: 4px;
+}
+
+.dropdown-item:active {
+  background: linear-gradient(90deg, 
+    rgba(0, 114, 63, 0.1) 0%, 
+    transparent 100%
+  );
+}
+
+.item-icon {
+  color: var(--uabc-green-primary);
+  opacity: 0.7;
+  transition: all var(--transition-fast);
+}
+
+.dropdown-item:hover .item-icon {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+.item-text {
+  flex: 1;
+}
+
+.item-arrow {
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: all var(--transition-fast);
+  color: var(--uabc-yellow-primary);
+}
+
+.dropdown-item:hover .item-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* TRANSITIONS */
+.dropdown-enter-active,
+.dropdown-leave-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dropdown-enter-from {
+  opacity: 0;
+  transform: translateY(-10px) scale(0.95);
+}
+
+.dropdown-leave-to {
+  opacity: 0;
+  transform: translateY(-10px) scale(0.95);
+}
+
+/* ANIMATIONS */
 @keyframes slideDown {
   from {
     opacity: 0;
@@ -100,37 +247,37 @@ function handleItemClick(item) {
   }
 }
 
-.dropdown-item {
-  padding: 0.875rem 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border-bottom: 1px solid #f0f0f0;
-  color: var(--text-secondary, #666);
+@keyframes fadeInItem {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-.dropdown-item:last-child {
-  border-bottom: none;
-}
-
-.dropdown-item:hover {
-  background: var(--bg-hover, #f8f9fa);
-  color: var(--primary-color, #4a90e2);
-  padding-left: 1.25rem;
-}
-
-.dropdown-item:active {
-  background: var(--bg-active, #e3f2fd);
-}
-
-/* Responsive */
+/* RESPONSIVE */
 @media (max-width: 768px) {
-  .dropdown-button {
-    padding: 0.875rem;
-    font-size: 0.9rem;
+  .dropdown-trigger {
+    padding: var(--space-md) var(--space-lg);
+    font-size: 0.875rem;
   }
 
   .dropdown-item {
-    padding: 0.75rem 1rem;
+    padding: var(--space-sm) var(--space-md);
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dropdown-trigger {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .trigger-text {
+    font-size: 0.8125rem;
   }
 }
 </style>

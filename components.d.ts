@@ -13,6 +13,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppHeader: typeof import('./src/components/AppHeader.vue')['default']
     BarraBusqueda: typeof import('./src/components/BarraBusqueda.vue')['default']
+    BodySectionLayout: typeof import('./src/components/BodySectionLayout.vue')['default']
     CuerpoHumano: typeof import('./src/components/CuerpoHumano.vue')['default']
     DiagnosticsHelper: typeof import('./src/components/DiagnosticsHelper.vue')['default']
     EditorAdmin: typeof import('./src/components/EditorAdmin.vue')['default']

@@ -1,59 +1,21 @@
 <template>
-  <v-container fluid class="pa-0 fill-height">
-    <v-card class="d-flex flex-column" style="width: 100%; height: 100%;">
-      <v-card-title class="flex-grow-0" style="background-color: #00796B; color: white;">
-        <v-icon start>mdi-arm-flex</v-icon>
-        Brazos - Extremidades Superiores
-        <v-spacer></v-spacer>
-        <v-btn icon size="small" @click="goBack">
-          <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
-      </v-card-title>
-
-      <v-card-text class="pa-0 flex-grow-1 d-flex" style="min-height: 0; overflow: hidden;">
-        <!-- Canvas 3D izquierda -->
-        <div style="flex: 1; position: relative;">
-          <div ref="canvasContainer" style="width: 100%; height: 100%;"></div>
-
-          <div v-if="isLoadingModel" class="absolute-center">
-            <v-progress-circular indeterminate color="primary" size="64" />
-            <div class="mt-2" style="color: white;">Cargando modelo...</div>
-          </div>
-
-          <div v-if="errorMessage" class="error-overlay">
-            <v-icon color="error" size="48">mdi-alert-circle</v-icon>
-            <div class="mt-2">{{ errorMessage }}</div>
-          </div>
-
-          <div class="controls-overlay">
-            <div><strong>Controles:</strong></div>
-            <div>🖱️ Arrastrar: Rotar</div>
-            <div>🖱️ Rueda: Zoom</div>
-          </div>
-
-          <v-btn
-            icon
-            size="small"
-            color="primary"
-            class="reset-btn"
-            @click="resetCamera"
-          >
-            <v-icon>mdi-camera-retake</v-icon>
-          </v-btn>
-        </div>
-
-        <!-- Panel de información derecha -->
-        <PanelContenidoCuerpo
-          sectionKey="brazos"
-          title="Brazos"
-          icon="mdi-arm-flex"
-          chipColor="teal"
-        />
-
-
-      </v-card-text>
-    </v-card>
-  </v-container>
+  <BodySectionLayout
+    title="Brazos"
+    subtitle="Extremidades Superiores"
+    icon="mdi-arm-flex"
+    :header-color="'linear-gradient(135deg, #00796B 0%, #004d47 100%)'"
+    section-key="brazos"
+    chip-color="teal"
+    :is-loading="isLoadingModel"
+    :error="errorMessage"
+    @reset-camera="resetCamera"
+    @go-back="goBack"
+    @retry="retryLoad"
+  >
+    <template #canvas>
+      <div ref="canvasContainer" class="canvas-3d"></div>
+    </template>
+  </BodySectionLayout>
 </template>
 
 <script setup>
@@ -62,16 +24,13 @@ import { useRouter } from 'vue-router'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { getContent } from '@/api/content'
+import BodySectionLayout from '@/components/BodySectionLayout.vue'
 import modeloArmsPath from '@/assets/brazos.glb?url'
-import PanelContenidoCuerpo from '@/components/PanelContenidoCuerpo.vue'
 
 const router = useRouter()
 const canvasContainer = ref(null)
 const isLoadingModel = ref(true)
 const errorMessage = ref('')
-const content = ref({ text: '', image: '' })
-const contentError = ref(false)
 
 let scene, camera, renderer, controls, model
 let animationId = null
@@ -79,7 +38,6 @@ let animationId = null
 onMounted(() => {
   initThree()
   loadModel()
-  fetchCMSContent()
   animate()
   window.addEventListener('resize', onWindowResize)
 })
@@ -92,147 +50,159 @@ onBeforeUnmount(() => {
 })
 
 const initThree = () => {
-  scene = new THREE.Scene()
-  scene.background = new THREE.Color(0x2d3436)
+  try {
+    scene = new THREE.Scene()
+    scene.background = new THREE.Color(0x1a1d23)
 
-  const container = canvasContainer.value
-  const width = container.clientWidth
-  const height = container.clientHeight
+    const container = canvasContainer.value
+    if (!container) throw new Error('Container no encontrado')
 
-  camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000)
-  camera.position.set(0, 0, 3.5)
+    const width = container.clientWidth
+    const height = container.clientHeight
 
-  renderer = new THREE.WebGLRenderer({ antialias: true })
-  renderer.setSize(width, height)
-  renderer.setPixelRatio(window.devicePixelRatio)
-  container.appendChild(renderer.domElement)
+    camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000)
+    camera.position.set(0, 0, 3.5)
 
-  controls = new OrbitControls(camera, renderer.domElement)
-  controls.enableDamping = true
-  controls.dampingFactor = 0.05
-  controls.minDistance = 2
-  controls.maxDistance = 8
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false })
+    renderer.setSize(width, height)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.shadowMap.enabled = true
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap
+    container.appendChild(renderer.domElement)
 
-  const ambient = new THREE.AmbientLight(0xffffff, 0.8)
-  scene.add(ambient)
+    controls = new OrbitControls(camera, renderer.domElement)
+    controls.enableDamping = true
+    controls.dampingFactor = 0.05
+    controls.minDistance = 2
+    controls.maxDistance = 8
+    controls.maxPolarAngle = Math.PI * 0.9
+    controls.target.set(0, 0, 0)
 
-  const dir1 = new THREE.DirectionalLight(0xffffff, 0.9)
-  dir1.position.set(5, 10, 7.5)
-  scene.add(dir1)
+    // Iluminación mejorada
+    const ambient = new THREE.AmbientLight(0xffffff, 0.6)
+    scene.add(ambient)
 
-  const dir2 = new THREE.DirectionalLight(0xffffff, 0.5)
-  dir2.position.set(-5, 5, -5)
-  scene.add(dir2)
+    const mainLight = new THREE.DirectionalLight(0xffffff, 1.2)
+    mainLight.position.set(5, 10, 7.5)
+    mainLight.castShadow = true
+    mainLight.shadow.mapSize.width = 2048
+    mainLight.shadow.mapSize.height = 2048
+    scene.add(mainLight)
+
+    const fillLight = new THREE.DirectionalLight(0xffffff, 0.5)
+    fillLight.position.set(-5, 5, -5)
+    scene.add(fillLight)
+
+    const rimLight = new THREE.DirectionalLight(0x00796B, 0.8)
+    rimLight.position.set(0, 5, -10)
+    scene.add(rimLight)
+
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.4)
+    scene.add(hemiLight)
+  } catch (error) {
+    console.error('Error inicializando Three.js:', error)
+    errorMessage.value = 'Error al inicializar el visor 3D'
+  }
 }
 
 const loadModel = () => {
   const loader = new GLTFLoader()
+  
   loader.load(
     modeloArmsPath,
     (gltf) => {
       model = gltf.scene
+
+      // Centrar y escalar
       const box = new THREE.Box3().setFromObject(model)
       const center = box.getCenter(new THREE.Vector3())
+      const size = box.getSize(new THREE.Vector3())
+      
       model.position.sub(center)
-      model.scale.setScalar(1.5)
+      
+      const maxDim = Math.max(size.x, size.y, size.z)
+      const scale = 1.5 / maxDim
+      model.scale.setScalar(scale)
 
-      // Restaurar color verde original
+      // Aplicar materiales mejorados
       model.traverse((child) => {
         if (child.isMesh) {
-          child.material = child.material.clone()
-          child.material.color.setHex(0x00796B)
-          child.material.emissive.setHex(0x004d47)
+          child.castShadow = true
+          child.receiveShadow = true
+          
+          // Material PBR mejorado
+          const material = new THREE.MeshStandardMaterial({
+            color: 0x00796B,
+            emissive: 0x004d47,
+            emissiveIntensity: 0.2,
+            metalness: 0.3,
+            roughness: 0.7,
+            side: THREE.FrontSide
+          })
+          
+          child.material = material
         }
       })
 
       scene.add(model)
       isLoadingModel.value = false
+      console.log('✓ Modelo de brazos cargado')
     },
-    undefined,
+    (progress) => {
+      const percent = (progress.loaded / progress.total) * 100
+      console.log(`Cargando: ${percent.toFixed(0)}%`)
+    },
     (error) => {
       console.error('Error cargando modelo:', error)
-      errorMessage.value = 'No se pudo cargar el modelo.'
+      errorMessage.value = 'No se pudo cargar el modelo 3D. Verifica que brazos.glb existe en /src/assets/'
       isLoadingModel.value = false
     }
   )
 }
 
-const fetchCMSContent = async () => {
-  try {
-    const data = await getContent('brazos')
-    if (data && (data.text || data.image)) {
-      content.value = data
-      contentError.value = false
-    } else {
-      contentError.value = true
-    }
-  } catch (err) {
-    console.error('Error cargando contenido:', err)
-    contentError.value = true
+const animate = () => {
+  animationId = requestAnimationFrame(animate)
+  
+  if (controls) controls.update()
+  if (model) model.rotation.y += 0.003
+  
+  if (renderer && scene && camera) {
+    renderer.render(scene, camera)
   }
 }
 
-const animate = () => {
-  animationId = requestAnimationFrame(animate)
-  controls.update()
-  if (model) model.rotation.y += 0.003
-  renderer.render(scene, camera)
-}
-
 const resetCamera = () => {
-  controls.reset()
+  if (controls) controls.reset()
   camera.position.set(0, 0, 3.5)
+  if (controls) controls.target.set(0, 0, 0)
+  if (model) model.rotation.set(0, 0, 0)
 }
 
 const onWindowResize = () => {
   const container = canvasContainer.value
-  camera.aspect = container.clientWidth / container.clientHeight
+  if (!container || !camera || !renderer) return
+
+  const width = container.clientWidth
+  const height = container.clientHeight
+
+  camera.aspect = width / height
   camera.updateProjectionMatrix()
-  renderer.setSize(container.clientWidth, container.clientHeight)
+  renderer.setSize(width, height)
 }
 
 const goBack = () => router.push('/')
+
+const retryLoad = () => {
+  errorMessage.value = ''
+  isLoadingModel.value = true
+  loadModel()
+}
 </script>
 
 <style scoped>
-.absolute-center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  z-index: 10;
-}
-
-.error-overlay {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #ff6b6b;
-  background: rgba(0, 0, 0, 0.8);
-  padding: 20px;
-  border-radius: 8px;
-  z-index: 10;
-}
-
-.controls-overlay {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background: rgba(0, 0, 0, 0.6);
-  color: white;
-  padding: 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  pointer-events: none;
-  z-index: 5;
-}
-
-.reset-btn {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  z-index: 5;
+.canvas-3d {
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 </style>
