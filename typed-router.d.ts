@@ -19,6 +19,7 @@ declare module 'vue-router/auto-routes' {
    */
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
+    '/admin': RouteRecordInfo<'/admin', '/admin', Record<never, never>, Record<never, never>>,
     '/secciones_cuerpo/brazos': RouteRecordInfo<'/secciones_cuerpo/brazos', '/secciones_cuerpo/brazos', Record<never, never>, Record<never, never>>,
     '/secciones_cuerpo/cabeza': RouteRecordInfo<'/secciones_cuerpo/cabeza', '/secciones_cuerpo/cabeza', Record<never, never>, Record<never, never>>,
     '/secciones_cuerpo/piernas': RouteRecordInfo<'/secciones_cuerpo/piernas', '/secciones_cuerpo/piernas', Record<never, never>, Record<never, never>>,
@@ -38,6 +39,10 @@ declare module 'vue-router/auto-routes' {
   export interface _RouteFileInfoMap {
     'src/pages/index.vue': {
       routes: '/'
+      views: never
+    }
+    'src/pages/admin.vue': {
+      routes: '/admin'
       views: never
     }
     'src/pages/secciones_cuerpo/brazos.vue': {

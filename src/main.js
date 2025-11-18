@@ -15,6 +15,8 @@ import { createApp } from 'vue'
 
 // Styles
 import 'unfonts.css'
+import '@/styles/variables.css'
+import '@/styles/global.css'
 
 const app = createApp(App)
 

@@ -1,276 +1,208 @@
 <template>
-  <v-container fluid class="pa-0 fill-height">
-    <v-card class="d-flex flex-column" style="width: 100%; height: 100%;">
-      <v-card-title class="flex-grow-0" style="background-color: #00796B !important; color: white; transition: background-color 0.6s ease;">
-        <v-icon start>mdi-arm-flex</v-icon>
-        Brazos - Extremidades Superiores
-        <v-spacer></v-spacer>
-        <v-btn icon size="small" @click="goBack">
-          <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
-      </v-card-title>
-      
-      <v-card-text class="pa-0 flex-grow-1 d-flex" style="min-height: 0; overflow: hidden;">
-        <!-- Canvas 3D izquierda -->
-        <div style="flex: 1; position: relative;">
-          <div ref="canvasContainer" style="width: 100%; height: 100%;"></div>
-          
-          <div v-if="isLoadingModel" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 10;">
-            <v-progress-circular indeterminate color="primary" size="64"></v-progress-circular>
-            <div style="margin-top: 16px; color: white;">Cargando modelo...</div>
-          </div>
-          
-          <div v-if="errorMessage" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #ff6b6b; background: rgba(0,0,0,0.8); padding: 20px; border-radius: 8px; z-index: 10;">
-            <v-icon color="error" size="48">mdi-alert-circle</v-icon>
-            <div style="margin-top: 8px;">{{ errorMessage }}</div>
-          </div>
-          
-          <div style="position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6); color: white; padding: 8px; border-radius: 4px; font-size: 12px; pointer-events: none; z-index: 5;">
-            <div><strong>Controles:</strong></div>
-            <div>🖱️ Arrastrar: Rotar</div>
-            <div>🖱️ Rueda: Zoom</div>
-          </div>
-          
-          <v-btn
-            icon
-            size="small"
-            color="primary"
-            style="position: absolute; bottom: 10px; right: 10px; z-index: 5;"
-            @click="resetCamera"
-          >
-            <v-icon>mdi-camera-retake</v-icon>
-          </v-btn>
-        </div>
-        
-        <!-- Panel de información derecha -->
-        <div style="width: 350px; background: #f5f5f5; overflow-y: auto; border-left: 1px solid #e0e0e0; padding: 24px;">
-          <div style="margin-bottom: 24px;">
-            <v-chip prepend-icon="mdi-arm-flex" color="teal" class="mb-3">
-              Extremidades Superiores
-            </v-chip>
-            <h2 style="font-size: 24px; font-weight: 600; margin: 16px 0; color: #00796B;">Brazos</h2>
-            <p style="color: #666; line-height: 1.6; margin-bottom: 16px;">
-              Los brazos son extremidades superiores que permiten al cuerpo realizar movimientos precisos y manipular objetos. Están formados por múltiples segmentos conectados por articulaciones.
-            </p>
-          </div>
-          
-          <v-divider class="my-4"></v-divider>
-          
-          <div style="margin-bottom: 24px;">
-            <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #333;">Estructuras clave:</h3>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <div style="padding: 12px; background: white; border-left: 4px solid #00796B; border-radius: 4px;">
-                <div style="font-weight: 600; color: #00796B;">Hombro</div>
-                <div style="font-size: 12px; color: #666; margin-top: 4px;">Articulación más móvil del cuerpo</div>
-              </div>
-              <div style="padding: 12px; background: white; border-left: 4px solid #00796B; border-radius: 4px;">
-                <div style="font-weight: 600; color: #00796B;">Brazo</div>
-                <div style="font-size: 12px; color: #666; margin-top: 4px;">Segmento entre hombro y codo</div>
-              </div>
-              <div style="padding: 12px; background: white; border-left: 4px solid #00796B; border-radius: 4px;">
-                <div style="font-weight: 600; color: #00796B;">Codo</div>
-                <div style="font-size: 12px; color: #666; margin-top: 4px;">Articulación de flexión y extensión</div>
-              </div>
-              <div style="padding: 12px; background: white; border-left: 4px solid #00796B; border-radius: 4px;">
-                <div style="font-weight: 600; color: #00796B;">Muñeca</div>
-                <div style="font-size: 12px; color: #666; margin-top: 4px;">Permite flexibilidad de la mano</div>
-              </div>
-              <div style="padding: 12px; background: white; border-left: 4px solid #00796B; border-radius: 4px;">
-                <div style="font-weight: 600; color: #00796B;">Manos</div>
-                <div style="font-size: 12px; color: #666; margin-top: 4px;">Herramientas de precisión y tactilidad</div>
-              </div>
-            </div>
-          </div>
-          
-          <v-divider class="my-4"></v-divider>
-          
-          <div>
-            <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #333;">Funciones principales:</h3>
-            <ul style="padding-left: 20px; color: #666; line-height: 1.8; font-size: 14px;">
-              <li>Manipulación de objetos</li>
-              <li>Movimientos precisos y delicados</li>
-              <li>Expresión corporal y comunicación</li>
-              <li>Fuerza y estabilidad</li>
-              <li>Sensibilidad táctil</li>
-            </ul>
-          </div>
-        </div>
-      </v-card-text>
-    </v-card>
-  </v-container>
+  <BodySectionLayout
+    title="Brazos"
+    subtitle="Extremidades Superiores"
+    icon="mdi-arm-flex"
+    :header-color="'linear-gradient(135deg, #00796B 0%, #004d47 100%)'"
+    section-key="brazos"
+    chip-color="teal"
+    :is-loading="isLoadingModel"
+    :error="errorMessage"
+    @reset-camera="resetCamera"
+    @go-back="goBack"
+    @retry="retryLoad"
+  >
+    <template #canvas>
+      <div ref="canvasContainer" class="canvas-3d"></div>
+    </template>
+  </BodySectionLayout>
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
-import { useRouter } from 'vue-router';
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { useRouter } from 'vue-router'
+import * as THREE from 'three'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import BodySectionLayout from '@/components/BodySectionLayout.vue'
+import modeloArmsPath from '@/assets/brazos.glb?url'
 
-import modeloArmsPath from '@/assets/brazos.glb?url';
+const router = useRouter()
+const canvasContainer = ref(null)
+const isLoadingModel = ref(true)
+const errorMessage = ref('')
 
-const router = useRouter();
-const canvasContainer = ref(null);
-const isLoadingModel = ref(true);
-const errorMessage = ref('');
-
-let scene, camera, renderer, controls, model;
-let animationId = null;
+let scene, camera, renderer, controls, model
+let animationId = null
 
 onMounted(() => {
-  initThree();
-  loadModel();
-  animate();
-  window.addEventListener('resize', onWindowResize);
-});
+  initThree()
+  loadModel()
+  animate()
+  window.addEventListener('resize', onWindowResize)
+})
 
 onBeforeUnmount(() => {
-  window.removeEventListener('resize', onWindowResize);
-  cancelAnimationFrame(animationId);
-  if (renderer) renderer.dispose();
-  if (controls) controls.dispose();
-});
+  window.removeEventListener('resize', onWindowResize)
+  cancelAnimationFrame(animationId)
+  if (renderer) renderer.dispose()
+  if (controls) controls.dispose()
+})
 
 const initThree = () => {
   try {
-    scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x2d3436);
+    scene = new THREE.Scene()
+    scene.background = new THREE.Color(0x1a1d23)
 
-    const container = canvasContainer.value;
-    if (!container) {
-      throw new Error('Container no encontrado');
-    }
+    const container = canvasContainer.value
+    if (!container) throw new Error('Container no encontrado')
 
-    const width = container.clientWidth;
-    const height = container.clientHeight;
+    const width = container.clientWidth
+    const height = container.clientHeight
 
-    camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
-    camera.position.set(0, 0, 3.5);
+    camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000)
+    camera.position.set(0, 0, 3.5)
 
-    renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(width, height);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    container.appendChild(renderer.domElement);
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false })
+    renderer.setSize(width, height)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.shadowMap.enabled = true
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap
+    container.appendChild(renderer.domElement)
 
-    controls = new OrbitControls(camera, renderer.domElement);
-    controls.target.set(0, 0, 0);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
-    controls.minDistance = 2;
-    controls.maxDistance = 8;
+    controls = new OrbitControls(camera, renderer.domElement)
+    controls.enableDamping = true
+    controls.dampingFactor = 0.05
+    controls.minDistance = 2
+    controls.maxDistance = 8
+    controls.maxPolarAngle = Math.PI * 0.9
+    controls.target.set(0, 0, 0)
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
-    scene.add(ambientLight);
+    // Iluminación mejorada
+    const ambient = new THREE.AmbientLight(0xffffff, 0.6)
+    scene.add(ambient)
 
-    const directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.9);
-    directionalLight1.position.set(5, 10, 7.5);
-    scene.add(directionalLight1);
+    const mainLight = new THREE.DirectionalLight(0xffffff, 1.2)
+    mainLight.position.set(5, 10, 7.5)
+    mainLight.castShadow = true
+    mainLight.shadow.mapSize.width = 2048
+    mainLight.shadow.mapSize.height = 2048
+    scene.add(mainLight)
 
-    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.5);
-    directionalLight2.position.set(-5, 5, -5);
-    scene.add(directionalLight2);
+    const fillLight = new THREE.DirectionalLight(0xffffff, 0.5)
+    fillLight.position.set(-5, 5, -5)
+    scene.add(fillLight)
 
-    const fillLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.4);
-    scene.add(fillLight);
+    const rimLight = new THREE.DirectionalLight(0x00796B, 0.8)
+    rimLight.position.set(0, 5, -10)
+    scene.add(rimLight)
+
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.4)
+    scene.add(hemiLight)
   } catch (error) {
-    console.error('Error inicializando Three.js:', error);
-    errorMessage.value = 'Error al inicializar el visor 3D';
+    console.error('Error inicializando Three.js:', error)
+    errorMessage.value = 'Error al inicializar el visor 3D'
   }
-};
+}
 
 const loadModel = () => {
-  const loader = new GLTFLoader();
+  const loader = new GLTFLoader()
   
   loader.load(
     modeloArmsPath,
     (gltf) => {
-      model = gltf.scene;
+      model = gltf.scene
 
-      const box = new THREE.Box3().setFromObject(model);
-      const size = box.getSize(new THREE.Vector3());
-      const center = box.getCenter(new THREE.Vector3());
+      // Centrar y escalar
+      const box = new THREE.Box3().setFromObject(model)
+      const center = box.getCenter(new THREE.Vector3())
+      const size = box.getSize(new THREE.Vector3())
+      
+      model.position.sub(center)
+      
+      const maxDim = Math.max(size.x, size.y, size.z)
+      const scale = 1.5 / maxDim
+      model.scale.setScalar(scale)
 
-      model.position.sub(center);
-
-      const maxDim = Math.max(size.x, size.y, size.z);
-      const scale = 2 / maxDim;
-      model.scale.setScalar(scale);
-
-      model.position.y = 0;
-
-      scene.add(model);
-
+      // Aplicar materiales mejorados
       model.traverse((child) => {
         if (child.isMesh) {
-          child.material = child.material.clone();
-          child.material.color.setHex(0x00796B);
-          child.material.emissive.setHex(0x004d47);
+          child.castShadow = true
+          child.receiveShadow = true
+          
+          // Material PBR mejorado
+          const material = new THREE.MeshStandardMaterial({
+            color: 0x00796B,
+            emissive: 0x004d47,
+            emissiveIntensity: 0.2,
+            metalness: 0.3,
+            roughness: 0.7,
+            side: THREE.FrontSide
+          })
+          
+          child.material = material
         }
-      });
+      })
 
-      isLoadingModel.value = false;
-      console.log('Modelo de brazos cargado exitosamente');
+      scene.add(model)
+      isLoadingModel.value = false
+      console.log('✓ Modelo de brazos cargado')
     },
     (progress) => {
-      const percent = (progress.loaded / progress.total) * 100;
-      console.log(`Cargando: ${percent.toFixed(2)}%`);
+      const percent = (progress.loaded / progress.total) * 100
+      console.log(`Cargando: ${percent.toFixed(0)}%`)
     },
     (error) => {
-      console.error('Error al cargar el modelo de brazos:', error);
-      isLoadingModel.value = false;
-      errorMessage.value = 'No se pudo cargar el modelo. Verifica que arms_model.glb existe en src/assets/';
+      console.error('Error cargando modelo:', error)
+      errorMessage.value = 'No se pudo cargar el modelo 3D. Verifica que brazos.glb existe en /src/assets/'
+      isLoadingModel.value = false
     }
-  );
-};
+  )
+}
 
 const animate = () => {
-  animationId = requestAnimationFrame(animate);
-
-  if (controls) {
-    controls.update();
-  }
-
-  if (model) {
-    model.rotation.y += 0.003;
-  }
-
+  animationId = requestAnimationFrame(animate)
+  
+  if (controls) controls.update()
+  if (model) model.rotation.y += 0.003
+  
   if (renderer && scene && camera) {
-    renderer.render(scene, camera);
+    renderer.render(scene, camera)
   }
-};
+}
 
 const resetCamera = () => {
-  if (controls) {
-    controls.reset();
-  }
-  camera.position.set(0, 0, 3.5);
-  if (controls) {
-    controls.target.set(0, 0, 0);
-  }
-  if (model) {
-    model.rotation.set(0, 0, 0);
-  }
-};
+  if (controls) controls.reset()
+  camera.position.set(0, 0, 3.5)
+  if (controls) controls.target.set(0, 0, 0)
+  if (model) model.rotation.set(0, 0, 0)
+}
 
 const onWindowResize = () => {
-  const container = canvasContainer.value;
-  if (container && camera && renderer) {
-    const width = container.clientWidth;
-    const height = container.clientHeight;
+  const container = canvasContainer.value
+  if (!container || !camera || !renderer) return
 
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
-    renderer.setSize(width, height);
-  }
-};
+  const width = container.clientWidth
+  const height = container.clientHeight
 
-const goBack = () => {
-  router.push('/');
-};
+  camera.aspect = width / height
+  camera.updateProjectionMatrix()
+  renderer.setSize(width, height)
+}
+
+const goBack = () => router.push('/')
+
+const retryLoad = () => {
+  errorMessage.value = ''
+  isLoadingModel.value = true
+  loadModel()
+}
 </script>
 
 <style scoped>
-div {
-  box-sizing: border-box;
+.canvas-3d {
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 </style>
