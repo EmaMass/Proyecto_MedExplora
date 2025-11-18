@@ -113,6 +113,7 @@ const props = defineProps({
 })
 
 const router = useRouter();
+const emit = defineEmits(['part-clicked'])
 
 // Referencias a elementos del DOM
 const canvasContainer = ref(null);
@@ -536,31 +537,36 @@ const onCanvasMouseMove = (event) => {
 };
 
 const onCanvasClick = (event) => {
-
-  if (props.highlighted.length > 0) {
-    // Desactivamos el click y la navegación
-    // cuando estamos en modo diagnóstico.
-    return;
-  }
-  
+  // 1. Hacemos el "raycasting" para ver qué clicamos
   const rect = canvasContainer.value.getBoundingClientRect();
   mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
   mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
   
   raycaster.setFromCamera(mouse, camera);
   const intersects = raycaster.intersectObjects(clickableObjects, false);
-  
+
   if (intersects.length > 0) {
     const clickedObject = intersects[0].object;
-    const partName = partMeshMap.get(clickedObject);
-    const partInfo = bodyParts[partName] || bodyParts['default'];
+    const partName = partMeshMap.get(clickedObject); // Ej: 'head'
     
+    // 2. (¡NUEVO!) Emitimos la parte clicada SIEMPRE
+    if (partName) {
+      emit('part-clicked', partName);
+    }
+
+    // 3. (MODIFICADO) Si estamos en modo diagnóstico,
+    // ya emitimos el clic, así que no hacemos nada más.
+    if (props.highlighted.length > 0) {
+      return;
+    }
+    
+    // 4. Si NO estamos en modo diagnóstico, continuamos
+    // con tu lógica original (resaltar en verde, navegar, etc.)
+    const partInfo = bodyParts[partName] || bodyParts['default'];
     selectedPart.value = partInfo.name;
     
-    // Cambiar color del header
     currentPartColor.value = partName;
     
-    // Resaltar TODOS los objetos de la sección
     clickableObjects.forEach(obj => {
       const originalMat = originalMaterials.get(obj);
       if (originalMat) {
@@ -573,15 +579,14 @@ const onCanvasClick = (event) => {
       }
     });
     
-    // Navegar a la vista de la sección
-// CÁMBIALO POR ESTO:
-if (partInfo.route) {
-  setTimeout(() => {
-    router.push(partInfo.route)
-  }, 300)
-}
+    if (partInfo.route) {
+      setTimeout(() => {
+        router.push(partInfo.route)
+      }, 300)
+    }
   }
 };
+    
 
 const resetCamera = () => {
   if (controls) {
