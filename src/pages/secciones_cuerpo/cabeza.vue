@@ -1,7 +1,7 @@
 <template>
   <BodySectionLayout
     title="Cabeza"
-    subtitle="Extremidades Superiores"
+    subtitle="Región Superior del Cuerpo"
     icon="mdi-arm-flex"
     :header-color="'linear-gradient(135deg, #00796B 0%, #004d47 100%)'"
     section-key="cabeza"

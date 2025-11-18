@@ -1,7 +1,7 @@
 <template>
   <BodySectionLayout
     title="torso"
-    subtitle="Extremidades Superiores"
+    subtitle="Parte Central del Cuerpo"
     icon="mdi-arm-flex"
     :header-color="'linear-gradient(135deg, #00796B 0%, #004d47 100%)'"
     section-key="torso"
