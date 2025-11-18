@@ -1,0 +1,56 @@
+/* Estilos para el contenedor de referencias */
+.references-wrapper {
+  flex: 1;
+  background-color: #f5f5f5;
+  border-radius: 12px;
+  padding: 20px;
+  overflow-y: auto;
+  max-height: calc(100vh - 140px);
+}
+
+.back-button {
+  padding: 10px 20px;
+  background-color: #00723F;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  transition: background-color 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.back-button:hover {
+  background-color: #024731;
+  transform: translateX(-2px);
+}
+
+/* Asegurar que el aside se mantenga visible con referencias */
+.main-content {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.controls-section {
+  width: 280px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    flex-direction: column;
+  }
+  
+  .controls-section {
+    width: 100%;
+  }
+  
+  .references-wrapper {
+    max-height: none;
+  }
+}

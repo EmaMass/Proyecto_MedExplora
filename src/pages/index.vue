@@ -8,33 +8,17 @@
       <aside class="controls-section">
         <BarraBusqueda v-model="searchTerm" />
 
-        <MenuDropdown
-          title="INFORMACIÓN"
-          :items="menuData.informacion"
-          :isOpen="dropdowns.informacion"
-          @toggle="toggleDropdown('informacion')"
-        />
+        <MenuDropdown title="INFORMACIÓN" :items="menuData.informacion" :isOpen="dropdowns.informacion"
+          @toggle="toggleDropdown('informacion')" @item-click="handleMenuClick" />
 
-        <MenuDropdown
-          title="BÚSQUEDA"
-          :items="menuData.busqueda"
-          :isOpen="dropdowns.busqueda"
-          @toggle="toggleDropdown('busqueda')"
-        />
+        <MenuDropdown title="BÚSQUEDA" :items="menuData.busqueda" :isOpen="dropdowns.busqueda"
+          @toggle="toggleDropdown('busqueda')" />
 
-        <MenuDropdown
-          title="SISTEMAS"
-          :items="menuData.sistemas"
-          :isOpen="dropdowns.sistemas"
-          @toggle="toggleDropdown('sistemas')"
-        />
+        <MenuDropdown title="SISTEMAS" :items="menuData.sistemas" :isOpen="dropdowns.sistemas"
+          @toggle="toggleDropdown('sistemas')" />
 
-        <MenuDropdown
-          title="DIAGNÓSTICOS"
-          :items="menuData.diagnosticos"
-          :isOpen="dropdowns.diagnosticos"
-          @toggle="toggleDropdown('diagnosticos')"
-        />
+        <MenuDropdown title="DIAGNÓSTICOS" :items="menuData.diagnosticos" :isOpen="dropdowns.diagnosticos"
+          @toggle="toggleDropdown('diagnosticos')" />
       </aside>
     </main>
   </div>
@@ -45,6 +29,7 @@ import AppHeader from '/src/components/AppHeader.vue'
 import CuerpoHumano from '/src/components/CuerpoHumano.vue'
 import BarraBusqueda from '/src/components/BarraBusqueda.vue'
 import MenuDropdown from '/src/components/MenuDropdown.vue'
+import ReferenciasBibliograficas from '/src/components/ReferenciasBibliograficas.vue'
 
 import '/src/styles/medxplora.css'
 
@@ -59,13 +44,18 @@ const dropdowns = reactive({
   diagnosticos: false
 })
 
+// En el data/ref
+const showReferences = ref(false)
+
+// En menuData
 const menuData = {
   informacion: [
     'Anatomía Básica',
     'Fisiología',
     'Patología',
     'Farmacología',
-    'Medicina Interna'
+    'Medicina Interna',
+    'Referencias Bibliográficas'
   ],
   busqueda: [
     'Por Síntomas',
@@ -96,5 +86,12 @@ function toggleDropdown(menu) {
     if (key !== menu) dropdowns[key] = false
   }
   dropdowns[menu] = !dropdowns[menu]
+}
+
+// La función handleMenuClick
+function handleMenuClick(item) {
+  if (item === 'Referencias Bibliográficas') {
+    showReferences.value = true
+  }
 }
 </script>
