@@ -15,6 +15,7 @@
       <v-tab value="nariz">Nariz</v-tab>
       <v-tab value="boca">Boca</v-tab>
       <v-tab value="cuello">Cuello</v-tab>
+      <v-tab value="pares">Cerebro</v-tab>
     </v-tabs>
 
     <v-window v-model="tab">
@@ -153,23 +154,35 @@
 
       <v-window-item value="boca">
         <v-container fluid>
-          <h3>Inspección</h3>
-          <ul>
-            <li>Labios, mucosa oral, lengua, dientes, encías.</li>
-            <li><b>Amígdalas:</b> Color, tamaño, exudado.</li>
-            <li><b>Paladar y úvula:</b> Movilidad.</li>
-          </ul>
-          <h3>Palpación y Maniobras</h3>
-          <ul>
-            <li><b>Lengua:</b> Nódulos, induración.</li>
-            <li>Reflejo nauseoso (Guttmann).</li>
-          </ul>
-          <h3>Pares Craneales</h3>
-          <ul>
-            <li><b>IX (Glosofaríngeo):</b> Reflejo nauseoso, gusto posterior.</li>
-            <li><b>X (Vago):</b> Movilidad del paladar, voz.</li>
-            <li><b>XII (Hipogloso):</b> Movimientos de la lengua.</li>
-          </ul>
+          <v-row>
+            <!-- Columna de la imagen -->
+            <v-col cols="12" md="5">
+              <v-img :src="imagenBoca" eager />
+            </v-col>
+
+            <!-- Columna del contenido -->
+            <v-col cols="12" md="7">
+              <h3>Inspección</h3>
+              <ul>
+                <li>Labios, mucosa oral, lengua, dientes, encías.</li>
+                <li><b>Amígdalas:</b> Color, tamaño, exudado.</li>
+                <li><b>Paladar y úvula:</b> Movilidad.</li>
+              </ul>
+
+              <h3>Palpación y Maniobras</h3>
+              <ul>
+                <li><b>Lengua:</b> Nódulos, induración.</li>
+                <li>Reflejo nauseoso (Guttmann).</li>
+              </ul>
+
+              <h3>Pares Craneales</h3>
+              <ul>
+                <li><b>IX (Glosofaríngeo):</b> Reflejo nauseoso, gusto posterior.</li>
+                <li><b>X (Vago):</b> Movilidad del paladar, voz.</li>
+                <li><b>XII (Hipogloso):</b> Movimientos de la lengua.</li>
+              </ul>
+            </v-col>
+          </v-row>
         </v-container>
       </v-window-item>
 
@@ -204,6 +217,22 @@
         </v-container>
       </v-window-item>
 
+      <v-window-item value="pares">
+        <v-container fluid>
+          <v-row justify="center">
+            <v-col cols="12" md="8" class="text-center">
+
+              <!-- Título centrado -->
+              <h3 style="margin-bottom: 10px;">Resumen de los Pares Craneales</h3>
+
+              <!-- Imagen -->
+              <v-img :src="imagenParesCraneales" eager />
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-window-item>
+
+
     </v-window>
   </v-card>
 </template>
@@ -226,14 +255,19 @@ import imagenOjo from '@/Imagenes/ojo.png'
 import imagenOido from '@/Imagenes/oido.png'
 import imagenNariz from '@/Imagenes/nariz.png'
 import imagenTiroides from '@/Imagenes/tiroidea.png'
+import imagenBoca from '@/Imagenes/Boca.jpg'
+import imagenParesCraneales from '@/Imagenes/cerebro.png'
+
 </script>
 
 <style scoped>
 h3 {
   margin-top: 10px;
   margin-bottom: 5px;
-  color: #1976D2; /* Color primario de Vuetify */
+  color: #1976D2;
+  /* Color primario de Vuetify */
 }
+
 ul {
   padding-left: 20px;
 }

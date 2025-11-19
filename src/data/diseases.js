@@ -1,11 +1,12 @@
 // src/data/diseases.js
+
 export const diseases = [
   {
     id: 'd1',
     name: 'Gripe Común (Influenza)',
     description: 'Infección viral aguda que afecta las vías respiratorias. Común en invierno.',
     symptoms: ['s1', 's2', 's4', 's5', 's7', 's15'],
-    image: 'https://placehold.co/600x300/E91E63/white?text=Gripe'
+    image: '@/Imagenes/cerebro.png'
   },
   {
     id: 'd2',
