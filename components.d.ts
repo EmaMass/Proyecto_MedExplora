@@ -23,6 +23,5 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SemiologiaCabezaCuello: typeof import('./src/components/info/SemiologiaCabezaCuello.vue')['default']
-    SemiologiaCabezCuello: typeof import('./src/components/info/SemiologiaCabezaCuello.vue')['default']
   }
 }
