@@ -113,6 +113,7 @@ const props = defineProps({
 })
 
 const router = useRouter();
+const emit = defineEmits(['part-clicked'])
 
 // Referencias a elementos del DOM
 const canvasContainer = ref(null);
@@ -537,11 +538,6 @@ const onCanvasMouseMove = (event) => {
 
 const onCanvasClick = (event) => {
 
-  if (props.highlighted.length > 0) {
-    // Desactivamos el click y la navegación
-    // cuando estamos en modo diagnóstico.
-    return;
-  }
   
   const rect = canvasContainer.value.getBoundingClientRect();
   mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
@@ -552,7 +548,20 @@ const onCanvasClick = (event) => {
   
   if (intersects.length > 0) {
     const clickedObject = intersects[0].object;
-    const partName = partMeshMap.get(clickedObject);
+const partName = partMeshMap.get(clickedObject); // Ej: 'head'
+    
+    // 2. (¡NUEVO!) Emitimos la parte clicada SIEMPRE
+    if (partName) {
+      emit('part-clicked', partName);
+    }
+    // 3. (MODIFICADO) Si estamos en modo diagnóstico,
+    // ya emitimos el clic, así que no hacemos nada más.
+    if (props.highlighted.length > 0) {
+      return;
+    }
+    
+    // 4. Si NO estamos en modo diagnóstico, continuamos
+    // con tu lógica original (resaltar en verde, navegar, etc.)
     const partInfo = bodyParts[partName] || bodyParts['default'];
     
     selectedPart.value = partInfo.name;

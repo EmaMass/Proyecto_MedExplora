@@ -1,7 +1,70 @@
 <template>
   <div class="cms-panel">
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <v-btn
+        color="uabc-green"
+        variant="elevated"
+        prepend-icon="mdi-book-open-variant"
+        @click="showSemiologia = !showSemiologia"
+        :class="{ active: showSemiologia }"
+        class="action-btn"
+      >
+        Semiología
+      </v-btn>
+      
+      <v-btn
+        color="uabc-yellow"
+        variant="elevated"
+        prepend-icon="mdi-medical-bag"
+        @click="showInspecciones = !showInspecciones"
+        :class="{ active: showInspecciones }"
+        class="action-btn"
+      >
+        Inspecciones
+      </v-btn>
+    </div>
+
+    <!-- Semiología Panel -->
+    <div v-if="showSemiologia" class="special-content">
+      <div class="special-header">
+        <h3>
+          <v-icon>mdi-book-open-variant</v-icon>
+          Semiología de {{ title }}
+        </h3>
+        <v-btn
+          icon
+          size="small"
+          variant="text"
+          @click="showSemiologia = false"
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </div>
+      <SemiologiaPanel :section-key="sectionKey" />
+    </div>
+
+    <!-- Inspecciones Panel -->
+    <div v-if="showInspecciones" class="special-content">
+      <div class="special-header">
+        <h3>
+          <v-icon>mdi-medical-bag</v-icon>
+          Inspecciones y Exploraciones de {{ title }}
+        </h3>
+        <v-btn
+          icon
+          size="small"
+          variant="text"
+          @click="showInspecciones = false"
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </div>
+      <InspeccionesPanel :section-key="sectionKey" />
+    </div>
+
     <!-- Loading State -->
-    <div v-if="isLoading" class="panel-state loading-state">
+    <div v-if="isLoading && !showSemiologia && !showInspecciones" class="panel-state loading-state">
       <div class="state-content">
         <v-progress-circular
           indeterminate
@@ -14,7 +77,7 @@
     </div>
 
     <!-- Error State -->
-    <div v-else-if="hasError" class="panel-state error-state">
+    <div v-else-if="hasError && !showSemiologia && !showInspecciones" class="panel-state error-state">
       <div class="state-content">
         <v-icon size="64" color="warning">mdi-information-outline</v-icon>
         <p class="state-title">Contenido no disponible</p>
@@ -28,7 +91,7 @@
     </div>
 
     <!-- Content -->
-    <div v-else class="panel-content">
+    <div v-else-if="!showSemiologia && !showInspecciones" class="panel-content">
       <!-- Image Section -->
       <div v-if="content.image" class="content-image">
         <div class="image-wrapper">
@@ -64,6 +127,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { getContent } from '@/api/content'
+import SemiologiaPanel from '@/components/SemiologiaPanel.vue'
+import InspeccionesPanel from '@/components/InspeccionesPanel.vue'
 
 const props = defineProps({
   sectionKey: {
@@ -84,6 +149,8 @@ const isLoading = ref(true)
 const hasError = ref(false)
 const content = ref({ text: '', image: '' })
 const imageError = ref(false)
+const showSemiologia = ref(false)
+const showInspecciones = ref(false)
 
 onMounted(async () => {
   await fetchContent()
@@ -122,6 +189,67 @@ function handleImageError() {
   background: var(--uabc-white);
   overflow-y: auto;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ACTION BUTTONS */
+.action-buttons {
+  display: flex;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: linear-gradient(135deg, var(--uabc-gray-100), var(--uabc-gray-200));
+  border-bottom: 2px solid var(--uabc-gray-300);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: var(--shadow-sm);
+}
+
+.action-btn {
+  flex: 1;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all var(--transition-normal);
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.action-btn.active {
+  box-shadow: var(--shadow-lg);
+  transform: scale(1.02);
+}
+
+/* SPECIAL CONTENT */
+.special-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideDown 0.3s ease-out;
+}
+
+.special-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) var(--space-lg);
+  background: linear-gradient(135deg, var(--uabc-green-primary), var(--uabc-green-dark));
+  color: var(--uabc-white);
+  box-shadow: var(--shadow-md);
+}
+
+.special-header h3 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 /* STATES */
@@ -369,6 +497,29 @@ function handleImageError() {
   margin: 0;
 }
 
+/* ANIMATIONS */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* RESPONSIVE */
 @media (max-width: 1024px) {
   .content-image {
@@ -381,6 +532,15 @@ function handleImageError() {
 }
 
 @media (max-width: 768px) {
+  .action-buttons {
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .action-btn {
+    width: 100%;
+  }
+
   .content-image {
     padding: var(--space-md);
   }
@@ -399,6 +559,14 @@ function handleImageError() {
     h3 { font-size: 1.25rem; }
     h4 { font-size: 1.125rem; }
   }
+
+  .special-header {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .special-header h3 {
+    font-size: 1rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -408,6 +576,10 @@ function handleImageError() {
 
   .formatted-content {
     font-size: 0.875rem;
+  }
+
+  .action-buttons {
+    padding: var(--space-sm);
   }
 }
 </style>

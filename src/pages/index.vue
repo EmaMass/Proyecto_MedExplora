@@ -3,7 +3,17 @@
     <AppHeader />
 
     <main class="main-content">
-      <CuerpoHumano :highlightedParts="highlightedBodyParts" />
+      <!-- Modelo 3D del Cuerpo (oculto cuando se muestran referencias) -->
+      <CuerpoHumano 
+        v-if="!showReferences" 
+        :highlightedParts="highlightedBodyParts" 
+      />
+
+      <!-- Panel de Referencias Bibliográficas (exclusivo) -->
+      <ReferencesBibliograficas 
+        v-if="showReferences"
+        @close="closeReferences"
+      />
 
       <aside class="controls-section">
         <BarraBusqueda v-model="searchTerm" />
@@ -31,17 +41,20 @@
         />
 
         <MenuDropdown
-          title="DIAGNÓSTICOS"
-          :items="menuData.diagnosticos"
-          :isOpen="dropdowns.diagnosticos"
-          @toggle="toggleDropdown('diagnosticos')"
-          @item-click="handleDiagnosticsClick"
+          title="REFERENCIAS" 
+          :items="menuData.referencias"
+          :isOpen="dropdowns.referencias"
+          @toggle="toggleDropdown('referencias')"
+          @item-click="handleReferenciasClick"
         />
       </aside>
     </main>
 
-    <!-- Botón flotante de diagnósticos -->
-    <FloatingDiagnostics @symptoms-changed="handleSymptomsChanged" />
+    <!-- Botón flotante de diagnósticos (oculto cuando se muestran referencias) -->
+    <FloatingDiagnostics 
+      v-if="!showReferences" 
+      @symptoms-changed="handleSymptomsChanged" 
+    />
 
     <!-- Diálogo de Semiología -->
     <v-dialog v-model="showSemiologiaDialog" max-width="1000px">
@@ -57,6 +70,7 @@ import BarraBusqueda from '/src/components/BarraBusqueda.vue'
 import MenuDropdown from '/src/components/MenuDropdown.vue'
 import FloatingDiagnostics from '@/components/FloatingDiagnostics.vue'
 import SemiologiaCabezaCuello from '@/components/info/SemiologiaCabezaCuello.vue'
+import ReferencesBibliograficas from '@/components/AccesoBibliografia.vue'
 
 import '/src/styles/medxplora.css'
 
@@ -65,12 +79,14 @@ import { reactive, ref } from 'vue'
 const searchTerm = ref('')
 const highlightedBodyParts = ref([])
 const showSemiologiaDialog = ref(false)
+const showReferences = ref(false)
 
 const dropdowns = reactive({
   informacion: false,
   busqueda: false,
   sistemas: false,
-  diagnosticos: false
+  diagnosticos: false,
+  referencias: false
 })
 
 const menuData = {
@@ -97,12 +113,9 @@ const menuData = {
     'Sistema Endocrino',
     'Sistema Inmunológico'
   ],
-  diagnosticos: [
-    'Diagnóstico Diferencial',
-    'Pruebas de Laboratorio',
-    'Estudios de Imagen',
-    'Examen Físico',
-    'Historia Clínica'
+  referencias: [
+    'Artículos Médicos',
+    'Biblioteca UABC'
   ]
 }
 
@@ -127,10 +140,28 @@ function handleSymptomsChanged(bodyParts) {
 }
 
 function handleInformacionClick(item) {
-  // Verificamos si el item clickeado es el correcto
   if (item === 'Semiología Cabeza') {
-    showSemiologiaDialog.value = true // Abre el diálogo
-    dropdowns.informacion = false     // Cierra el menú desplegable
+    showSemiologiaDialog.value = true
+    dropdowns.informacion = false
   }
 }
+
+function handleReferenciasClick(item) {
+  console.log('Referencia seleccionada:', item)
+  if (item === 'Artículos Médicos' || item === 'Biblioteca UABC') {
+    showReferences.value = true
+    dropdowns.referencias = false
+  }
+}
+
+function closeReferences() {
+  showReferences.value = false
+}
 </script>
+
+<style scoped>
+/* Asegurar que las transiciones sean suaves */
+.main-content {
+  position: relative;
+}
+</style>

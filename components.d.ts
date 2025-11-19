@@ -11,6 +11,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AccesoBibliografia: typeof import('./src/components/AccesoBibliografia.vue')['default']
     AppHeader: typeof import('./src/components/AppHeader.vue')['default']
     BarraBusqueda: typeof import('./src/components/BarraBusqueda.vue')['default']
     BodySectionLayout: typeof import('./src/components/BodySectionLayout.vue')['default']
@@ -18,10 +19,12 @@ declare module 'vue' {
     DiagnosticsHelper: typeof import('./src/components/DiagnosticsHelper.vue')['default']
     EditorAdmin: typeof import('./src/components/EditorAdmin.vue')['default']
     FloatingDiagnostics: typeof import('./src/components/FloatingDiagnostics.vue')['default']
+    InspeccionesPanel: typeof import('./src/components/InspeccionesPanel.vue')['default']
     MenuDropdown: typeof import('./src/components/MenuDropdown.vue')['default']
     PanelContenidoCuerpo: typeof import('./src/components/PanelContenidoCuerpo.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SemiologiaCabezaCuello: typeof import('./src/components/info/SemiologiaCabezaCuello.vue')['default']
+    SemiologiaPanel: typeof import('./src/components/SemiologiaPanel.vue')['default']
   }
 }
