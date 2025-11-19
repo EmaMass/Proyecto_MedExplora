@@ -1,18 +1,5 @@
 <template>
   <div class="menu-dropdown">
-<<<<<<< HEAD
-    <button class="menu-header" @click="$emit('toggle')" :class="{ active: isOpen }">
-      <span>{{ title }}</span>
-      <span class="arrow">{{ isOpen ? '▼' : '▶' }}</span>
-    </button>
-
-    <transition name="slide">
-      <ul v-if="isOpen" class="menu-items">
-        <li v-for="(item, index) in items" :key="index" @click="handleItemClick(item)" class="menu-item">
-          {{ item }}
-        </li>
-      </ul>
-=======
     <button
       class="dropdown-trigger"
       :class="{ active: isOpen }"
@@ -40,7 +27,6 @@
           <v-icon size="small" class="item-arrow">mdi-chevron-right</v-icon>
         </button>
       </div>
->>>>>>> 9c91e0504505e7abe8cd42eddfe2a3a4f0c26d1a
     </transition>
   </div>
 </template>
@@ -70,78 +56,6 @@ function handleItemClick(item) {
 
 <style scoped>
 .menu-dropdown {
-<<<<<<< HEAD
-  margin-bottom: 10px;
-}
-
-.menu-header {
-  width: 100%;
-  padding: 12px 16px;
-  background-color: #00723F;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: 600;
-  font-size: 14px;
-  transition: background-color 0.3s;
-}
-
-.menu-header:hover {
-  background-color: #024731;
-}
-
-.menu-header.active {
-  border-radius: 6px 6px 0 0;
-}
-
-.arrow {
-  font-size: 12px;
-}
-
-.menu-items {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-top: none;
-  border-radius: 0 0 6px 6px;
-  overflow: hidden;
-}
-
-.menu-item {
-  padding: 10px 16px;
-  cursor: pointer;
-  border-bottom: 1px solid #f0f0f0;
-  transition: background-color 0.2s;
-  font-size: 14px;
-  color: #333;
-}
-
-.menu-item:last-child {
-  border-bottom: none;
-}
-
-.menu-item:hover {
-  background-color: #E8F4EC;
-  color: #00723F;
-}
-
-.slide-enter-active,
-.slide-leave-active {
-  transition: all 0.3s ease;
-  max-height: 500px;
-}
-
-.slide-enter-from,
-.slide-leave-to {
-  max-height: 0;
-  opacity: 0;
-=======
   position: relative;
   width: 100%;
 }
@@ -259,10 +173,7 @@ function handleItemClick(item) {
 }
 
 .dropdown-item:hover {
-  background: linear-gradient(90deg, 
-    rgba(0, 114, 63, 0.05) 0%, 
-    transparent 100%
-  );
+  background: linear-gradient(90deg, rgba(0, 114, 63, 0.05) 0%, transparent 100%);
   color: var(--uabc-green-primary);
   padding-left: calc(var(--space-lg) + 4px);
 }
@@ -272,10 +183,7 @@ function handleItemClick(item) {
 }
 
 .dropdown-item:active {
-  background: linear-gradient(90deg, 
-    rgba(0, 114, 63, 0.1) 0%, 
-    transparent 100%
-  );
+  background: linear-gradient(90deg, rgba(0, 114, 63, 0.1) 0%, transparent 100%);
 }
 
 .item-icon {
@@ -365,6 +273,5 @@ function handleItemClick(item) {
   .trigger-text {
     font-size: 0.8125rem;
   }
->>>>>>> 9c91e0504505e7abe8cd42eddfe2a3a4f0c26d1a
 }
 </style>

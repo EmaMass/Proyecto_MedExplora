@@ -8,10 +8,7 @@
       <aside class="controls-section">
         <BarraBusqueda v-model="searchTerm" />
 
-<<<<<<< HEAD
-        <MenuDropdown title="INFORMACIÓN" :items="menuData.informacion" :isOpen="dropdowns.informacion"
-          @toggle="toggleDropdown('informacion')" @item-click="handleMenuClick" />
-=======
+        <!-- INFORMACIÓN -->
         <MenuDropdown
           title="INFORMACIÓN"
           :items="menuData.informacion"
@@ -19,18 +16,24 @@
           @toggle="toggleDropdown('informacion')"
           @item-click="handleInformacionClick"
         />
->>>>>>> 9c91e0504505e7abe8cd42eddfe2a3a4f0c26d1a
 
-        <MenuDropdown title="BÚSQUEDA" :items="menuData.busqueda" :isOpen="dropdowns.busqueda"
-          @toggle="toggleDropdown('busqueda')" />
+        <!-- BÚSQUEDA -->
+        <MenuDropdown
+          title="BÚSQUEDA"
+          :items="menuData.busqueda"
+          :isOpen="dropdowns.busqueda"
+          @toggle="toggleDropdown('busqueda')"
+        />
 
-        <MenuDropdown title="SISTEMAS" :items="menuData.sistemas" :isOpen="dropdowns.sistemas"
-          @toggle="toggleDropdown('sistemas')" />
+        <!-- SISTEMAS -->
+        <MenuDropdown
+          title="SISTEMAS"
+          :items="menuData.sistemas"
+          :isOpen="dropdowns.sistemas"
+          @toggle="toggleDropdown('sistemas')"
+        />
 
-<<<<<<< HEAD
-        <MenuDropdown title="DIAGNÓSTICOS" :items="menuData.diagnosticos" :isOpen="dropdowns.diagnosticos"
-          @toggle="toggleDropdown('diagnosticos')" />
-=======
+        <!-- DIAGNÓSTICOS -->
         <MenuDropdown
           title="DIAGNÓSTICOS"
           :items="menuData.diagnosticos"
@@ -38,7 +41,6 @@
           @toggle="toggleDropdown('diagnosticos')"
           @item-click="handleDiagnosticsClick"
         />
->>>>>>> 9c91e0504505e7abe8cd42eddfe2a3a4f0c26d1a
       </aside>
     </main>
 
@@ -57,12 +59,9 @@ import AppHeader from '/src/components/AppHeader.vue'
 import CuerpoHumano from '/src/components/CuerpoHumano.vue'
 import BarraBusqueda from '/src/components/BarraBusqueda.vue'
 import MenuDropdown from '/src/components/MenuDropdown.vue'
-<<<<<<< HEAD
-import ReferenciasBibliograficas from '/src/components/ReferenciasBibliograficas.vue'
-=======
+
 import FloatingDiagnostics from '@/components/FloatingDiagnostics.vue'
 import SemiologiaCabezaCuello from '@/components/info/SemiologiaCabezaCuello.vue'
->>>>>>> 9c91e0504505e7abe8cd42eddfe2a3a4f0c26d1a
 
 import '/src/styles/medxplora.css'
 
@@ -79,10 +78,6 @@ const dropdowns = reactive({
   diagnosticos: false
 })
 
-// En el data/ref
-const showReferences = ref(false)
-
-// En menuData
 const menuData = {
   informacion: [
     'Semiología Cabeza',
@@ -124,34 +119,18 @@ function toggleDropdown(menu) {
   dropdowns[menu] = !dropdowns[menu]
 }
 
-<<<<<<< HEAD
-// La función handleMenuClick
-function handleMenuClick(item) {
-  if (item === 'Referencias Bibliográficas') {
-    showReferences.value = true
-  }
-}
-</script>
-=======
-function handleMenuItemClick(section, item) {
-  if (section === 'informacion' && item === 'Semiología Cabeza') {
+function handleInformacionClick(item) {
+  if (item === 'Semiología Cabeza') {
     showSemiologiaDialog.value = true
     dropdowns.informacion = false
-  } else if (section === 'diagnosticos') {
-    console.log('Diagnóstico seleccionado:', item)
   }
+}
+
+function handleDiagnosticsClick(item) {
+  console.log('Diagnóstico seleccionado:', item)
 }
 
 function handleSymptomsChanged(bodyParts) {
   highlightedBodyParts.value = bodyParts
 }
-
-function handleInformacionClick(item) {
-  // Verificamos si el item clickeado es el correcto
-  if (item === 'Semiología Cabeza') {
-    showSemiologiaDialog.value = true // Abre el diálogo
-    dropdowns.informacion = false     // Cierra el menú desplegable
-  }
-}
 </script>
->>>>>>> 9c91e0504505e7abe8cd42eddfe2a3a4f0c26d1a
