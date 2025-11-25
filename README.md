@@ -8,6 +8,20 @@ Product Backlog: (https://docs.google.com/document/d/1cxH9uYEwQiRaF1BGL9IDxQBaiY
 
 This is the official scaffolding tool for Vuetify, designed to give you a head start in building your new Vuetify application. It sets up a base template with all the necessary configurations and standard directory structure, enabling you to begin development without the hassle of setting up the project from scratch.
 
+## Como Instalar y Correr el Programa
+
+Para poder correr el programa, es necesario instalar MongoDB:
+
+Sigue las instruciones del siguiente link para instalarlo en su cliente de Linux (Step 1 - Step 5):
+https://www.cherryservers.com/blog/install-mongodb-ubuntu-2404 
+
+Ahora, para poder correr el proyecto, necesitas hacer los siguientes pasos:
+1. En el folder del proyecto, correr "npm install" para instalar todos los paquetes necesitados para correr el frontend + dev dependecies para probar el proyecto
+2. Ahora, necesitamos ir a src/backend y dentro de ese folder en su consola de comandos, correr el comando de "npm install" para instalar los paquetes para manejar el backend del proyecto y realizar pruebas de software. 
+3. Al tener todos los paquetes necesarios para correr el proyecto, desde frontend hasta backend, regresa al folder base del proyecto y corre el comando "npm run dev:all", cuyo comando ejecuta ambas instacias del proyecto, del frontend y backend. 
+
+## Contenido generado por el Vuetify 3 / Default 
+
 ## ❗️ Important Links
 
 - 📄 [Docs](https://vuetifyjs.com/)
