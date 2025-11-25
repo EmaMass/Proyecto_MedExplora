@@ -105,7 +105,15 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 import modeloCuerpoPath from '@/assets/body2.glb?url';
 
+const props = defineProps({
+  highlighted: {
+    type: Array,
+    default: () => []
+  }
+})
+
 const router = useRouter();
+const emit = defineEmits(['part-clicked'])
 
 // Referencias a elementos del DOM
 const canvasContainer = ref(null);
@@ -205,6 +213,40 @@ onMounted(() => {
     canvasContainer.value.addEventListener('mousemove', onCanvasMouseMove);
   }
 });
+
+watch(() => props.highlighted, (newHighlightedParts) => {
+  updateHighlightsFromProps(newHighlightedParts);
+});
+
+
+function updateHighlightsFromProps(highlightedParts) {
+  // Si la lista de props está vacía, reseteamos todo al estado original
+  // Esto permite que el click/hover funcionen normalmente
+  if (highlightedParts.length === 0) {
+    clickableObjects.forEach(obj => {
+      const originalMat = originalMaterials.get(obj);
+      if (originalMat) {
+        obj.material.emissive.setHex(originalMat.emissive.getHex());
+      }
+    });
+    return;
+  }
+
+  // Si HAY partes para resaltar, ellas toman el control
+  clickableObjects.forEach(obj => {
+    const partName = partMeshMap.get(obj);
+    const originalMat = originalMaterials.get(obj);
+    if (!originalMat) return;
+
+    if (highlightedParts.includes(partName)) {
+      // Aplicar resaltado de síntoma (Rojo)
+      obj.material.emissive.setHex(0xE53935);
+    } else {
+      // Restaurar a original (sin resaltado)
+      obj.material.emissive.setHex(originalMat.emissive.getHex());
+    }
+  });
+}
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', onWindowResize);
@@ -446,6 +488,9 @@ const animate = () => {
 };
 
 const onCanvasMouseMove = (event) => {
+//
+  if (props.highlighted.length > 0) return;
+
   if (!highlightOnHover.value) return;
   
   const rect = canvasContainer.value.getBoundingClientRect();
@@ -492,6 +537,8 @@ const onCanvasMouseMove = (event) => {
 };
 
 const onCanvasClick = (event) => {
+
+  
   const rect = canvasContainer.value.getBoundingClientRect();
   mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
   mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
@@ -501,7 +548,20 @@ const onCanvasClick = (event) => {
   
   if (intersects.length > 0) {
     const clickedObject = intersects[0].object;
-    const partName = partMeshMap.get(clickedObject);
+const partName = partMeshMap.get(clickedObject); // Ej: 'head'
+    
+    // 2. (¡NUEVO!) Emitimos la parte clicada SIEMPRE
+    if (partName) {
+      emit('part-clicked', partName);
+    }
+    // 3. (MODIFICADO) Si estamos en modo diagnóstico,
+    // ya emitimos el clic, así que no hacemos nada más.
+    if (props.highlighted.length > 0) {
+      return;
+    }
+    
+    // 4. Si NO estamos en modo diagnóstico, continuamos
+    // con tu lógica original (resaltar en verde, navegar, etc.)
     const partInfo = bodyParts[partName] || bodyParts['default'];
     
     selectedPart.value = partInfo.name;

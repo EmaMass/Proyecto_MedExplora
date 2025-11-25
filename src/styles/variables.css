@@ -1,0 +1,43 @@
+/* Variables de colores UABC */
+:root {
+  /* Colores principales UABC */
+  --uabc-green-primary: #00723F;
+  --uabc-green-dark: #004d2a;
+  --uabc-green-light: #009653;
+  --uabc-yellow-primary: #DD9500;
+  --uabc-yellow-light: #FFB800;
+  --uabc-yellow-dark: #B87A00;
+  
+  /* Neutros */
+  --uabc-white: #FFFFFF;
+  --uabc-gray-100: #F8F9FA;
+  --uabc-gray-200: #E9ECEF;
+  --uabc-gray-300: #DEE2E6;
+  --uabc-gray-700: #495057;
+  --uabc-gray-900: #212529;
+  
+  /* Sombras */
+  --shadow-sm: 0 2px 4px rgba(0, 114, 63, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 114, 63, 0.15);
+  --shadow-lg: 0 8px 24px rgba(0, 114, 63, 0.2);
+  --shadow-xl: 0 16px 48px rgba(0, 114, 63, 0.25);
+  
+  /* Transiciones */
+  --transition-fast: 0.15s ease-in-out;
+  --transition-normal: 0.3s ease-in-out;
+  --transition-slow: 0.5s ease-in-out;
+  
+  /* Bordes */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  
+  /* Espaciado */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+}
