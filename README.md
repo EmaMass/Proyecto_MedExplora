@@ -20,6 +20,10 @@ Ahora, para poder correr el proyecto, necesitas hacer los siguientes pasos:
 2. Ahora, necesitamos ir a src/backend y dentro de ese folder en su consola de comandos, correr el comando de "npm install" para instalar los paquetes para manejar el backend del proyecto y realizar pruebas de software. 
 3. Al tener todos los paquetes necesarios para correr el proyecto, desde frontend hasta backend, regresa al folder base del proyecto y corre el comando "npm run dev:all", cuyo comando ejecuta ambas instacias del proyecto, del frontend y backend. 
 
+Para manejar el sistema CMS, necesitas ingresar el link de "http://127.0.0.1:3000/admin"
+
+Y para observar la respuesta JSON del base de datos, puedes utilizar "http://127.0.0.1:5000/api/content/brazos"
+
 ## Contenido generado por el Vuetify 3 / Default 
 
 ## ❗️ Important Links
